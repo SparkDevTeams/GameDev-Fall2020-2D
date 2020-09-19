@@ -273,6 +273,7 @@ GameObject:
   - component: {fileID: 6586343681194656559}
   - component: {fileID: 6586343681194656558}
   - component: {fileID: 6586343681194656553}
+  - component: {fileID: 3053016615285944242}
   - component: {fileID: 6586343681194656555}
   - component: {fileID: 6586343681194656554}
   m_Layer: 10
@@ -494,6 +495,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canAttackBreak: 0
   damage: 5
+  attackBuffer: 0.1
+  attackRadius: 1
+  hitboxOffsetX: 2
+  hitboxOffsetY: 0
+  attackLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  editorHitColor: {r: 0, g: 1, b: 0, a: 1}
+  editorDefaultColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &3053016615285944242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6586343681194656545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd10d5b413ebc514ab2de08c60cc78b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canAttackBreak: 0
+  damage: 3
   attackBuffer: 0.1
   attackRadius: 1
   hitboxOffsetX: 2

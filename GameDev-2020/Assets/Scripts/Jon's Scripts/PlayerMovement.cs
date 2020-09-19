@@ -45,8 +45,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        leftButtonPressed = Input.GetAxis("Horizontal") < 0.0f && inputEnabled;
-        rightButtonPressed = Input.GetAxis("Horizontal") > 0.0f && inputEnabled;
+        leftButtonPressed = Input.GetAxisRaw("Horizontal") < 0.0f && inputEnabled;
+        rightButtonPressed = Input.GetAxisRaw("Horizontal") > 0.0f && inputEnabled;
         dashButtonDown = Input.GetButtonDown("Dash") && inputEnabled;
     }
 

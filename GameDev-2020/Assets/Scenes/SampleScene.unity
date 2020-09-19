@@ -1658,6 +1658,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3053016615285944242, guid: 99bcfa73575ffc94097f9f1437a03e13,
+        type: 3}
+      propertyPath: hitboxOffsetX
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3053016615285944242, guid: 99bcfa73575ffc94097f9f1437a03e13,
+        type: 3}
+      propertyPath: attackRadius
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 6586343681194656545, guid: 99bcfa73575ffc94097f9f1437a03e13,
         type: 3}
       propertyPath: m_Name

@@ -10,6 +10,7 @@ public class AttackManager : MonoBehaviour
     private PlayerState playerState;
     private Attack basicMeleeAttack;
     private Attack diveAttack;
+    private Attack airAttack;
     private Attack currentAttack = null;
 
     void Start()
@@ -19,6 +20,7 @@ public class AttackManager : MonoBehaviour
         currentAttack = null;
         basicMeleeAttack = GetComponent<BasicAttack>();
         diveAttack = GetComponent<DiveAttack>();
+        airAttack = GetComponent<AirAttack>();
         playerState = GetComponent<PlayerState>();
     }
 
@@ -69,6 +71,10 @@ public class AttackManager : MonoBehaviour
                 else if (basicMeleeAttack.CanAttack())
                 {
                     selectedAttack = basicMeleeAttack;
+                }
+                else if(airAttack.CanAttack())
+                {
+                    selectedAttack = airAttack;
                 }
             }
         }
