@@ -125,5 +125,6 @@ public class MattyPlayerMovement : MonoBehaviour
         //collider.material.dynamicFriction = 0;
         // collider2D.material.dynamicFriction = 0.4;
         // collider2D.material.staticFriction = 0.4;
+
     }
 }
