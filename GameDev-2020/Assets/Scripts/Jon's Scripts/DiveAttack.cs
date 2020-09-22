@@ -50,7 +50,8 @@ public class DiveAttack : Attack
                     isDiving = true;
                 }
             }
-            else if(isDiving && playerState.IsGrounded())
+            
+            if(isDiving && playerState.IsGrounded())
             {
                 attackInit = false;
                 isDiving = false;
