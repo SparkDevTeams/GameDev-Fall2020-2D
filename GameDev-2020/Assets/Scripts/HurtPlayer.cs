@@ -18,8 +18,13 @@ public class HurtPlayer : MonoBehaviour
 
     }
 
+    //Upon hitting the player, call the damage player function
     private void OnTriggerEnter2D(Collider2D other)
     {
-        health.damagePlayer(damage);
+        if (other.tag == "Player")
+        {
+            health.damagePlayer(damage);
+        }
+
     }
 }

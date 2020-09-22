@@ -1833,6 +1833,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: OtherMatty
       objectReference: {fileID: 0}
+    - target: {fileID: 6586343681194656545, guid: 99bcfa73575ffc94097f9f1437a03e13,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 6586343681194656548, guid: 99bcfa73575ffc94097f9f1437a03e13,
         type: 3}
       propertyPath: m_LocalPosition.x
