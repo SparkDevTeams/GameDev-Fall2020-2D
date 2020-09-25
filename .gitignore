@@ -58,3 +58,23 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+GameDev-2020/Library/ArtifactDB
+GameDev-2020/Library/ArtifactDB
+GameDev-2020/Library/PackageManager/ProjectCache.bin
+GameDev-2020/Library/SceneVisibilityState.asset
+GameDev-2020/Library/SourceAssetDB
+# Unity3D generated meta files
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Unity3D generated file on crash reports
+sysinfo.txt
+
+# Builds
+*.apk
+*.unitypackage
+
+# Crashlytics generated file
+crashlytics-build.properties
+
