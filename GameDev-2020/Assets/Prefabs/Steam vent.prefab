@@ -273,6 +273,7 @@ MonoBehaviour:
   ventHitbox: {fileID: 8974033853345605943}
   timeToStopVenting: 3
   timeToStartVenting: 3
+  damageDealt: 0
 --- !u!1 &8974033853345605943
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,6 +284,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8455244782117354455}
   - component: {fileID: 8974033853345605942}
+  - component: {fileID: 3683433693699419305}
   - component: {fileID: 69516599326211472}
   m_Layer: 0
   m_Name: Hurtbox
@@ -337,6 +339,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.45508325, y: 0.34981474}
   m_EdgeRadius: 0
+--- !u!114 &3683433693699419305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8974033853345605943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19c447a934f40494eb043d3e7f5ff75a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
 --- !u!222 &69516599326211472
 CanvasRenderer:
   m_ObjectHideFlags: 0
