@@ -68,8 +68,8 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if ((leftButtonPressed && rightButtonPressed)
-            || (!leftButtonPressed && !rightButtonPressed))
+        if (inputEnabled && ((leftButtonPressed && rightButtonPressed)
+            || (!leftButtonPressed && !rightButtonPressed)))
         {
             StayStationary();
         }
@@ -134,6 +134,7 @@ public class PlayerMovement : MonoBehaviour
         inputEnabled = false;
         StopDash();
         DisableJump();
+        StayStationary();
     }
 
     public void EnableMovement() 
