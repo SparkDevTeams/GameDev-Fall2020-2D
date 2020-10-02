@@ -6,6 +6,7 @@ public class HealthManager : MonoBehaviour
 {
     [SerializeField] private int shieldHealth;
     [SerializeField] private bool isHit;
+    [SerializeField] private int maxHealth;
 
     [SerializeField] private float invincibilityTime;
     [SerializeField] private float currentTimer;
@@ -48,5 +49,14 @@ public class HealthManager : MonoBehaviour
             isHit = true;
         }
 
+    }
+
+    public int getShieldHealth()
+    {
+        return shieldHealth;
+    }
+
+    public void resetHealth(){
+        shieldHealth = maxHealth;
     }
 }

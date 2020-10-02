@@ -6,6 +6,8 @@ public class HurtPlayer : MonoBehaviour
 {
     private HealthManager health;
     [SerializeField] private int damage;
+    [SerializeField] private float knockX;
+    [SerializeField] private float knockY;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +26,13 @@ public class HurtPlayer : MonoBehaviour
         if (other.tag == "Player")
         {
             health.damagePlayer(damage);
+            knockBack(other);
         }
 
+    }
+
+    void knockBack(Collider2D player)
+    {
+        player.GetComponent<Rigidbody2D>().velocity = new Vector2(player.GetComponent<Rigidbody2D>().velocity.x + knockX, knockY);
     }
 }
