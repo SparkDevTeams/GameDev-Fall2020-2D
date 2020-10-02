@@ -6,6 +6,7 @@ public class RobotBird : MonoBehaviour
 {
     [SerializeField] float endPosX = 0;
     [SerializeField] float duration = 0;
+    [SerializeField] float eggDropWaitTimeSeconds = 0;
 
     private float t;
     private float time;
@@ -25,7 +26,6 @@ public class RobotBird : MonoBehaviour
     }
     private void Update()
     {
-        //Debug.Log(randomTimeForEggDrop);
         //Debug.Log(t);
         transform.position = new Vector3(posX, transform.position.y, 0);
 
@@ -47,15 +47,22 @@ public class RobotBird : MonoBehaviour
             transform.rotation = Quaternion.Euler(birdRotation);
 
             randomTimeForEggDrop = Random.value;
-            canDropEgg = true;
 
             time = 0;
         }
 
+        // If the random number falls within a certain range
         if (randomTimeForEggDrop < t + 0.01 && randomTimeForEggDrop > t - 0.01 && canDropEgg)
         {
             canDropEgg = false;
-            Debug.Log(randomTimeForEggDrop);
+            StartCoroutine(eggDropWaitTime());
+            //Debug.Log(randomTimeForEggDrop);
         }
+    }
+
+    private IEnumerator eggDropWaitTime()
+    {
+        yield return new WaitForSeconds(eggDropWaitTimeSeconds);
+        canDropEgg = true;
     }
 }
