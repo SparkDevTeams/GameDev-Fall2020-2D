@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AirAttack : Attack
+public class AirAttack : Attack, IHitboxResponder
 {
+
+    [SerializeField] private Hitbox[] hitboxes = new Hitbox[5];
     [SerializeField] private int damage = 3;
     [SerializeField] private float attackBuffer = 0.1f;
-    [SerializeField] private float attackRadius = 1.0f;
-    [SerializeField] private float hitboxOffsetX = 2.0f;
-    [SerializeField] private float hitboxOffsetY = 0.0f;
-    [SerializeField] private LayerMask attackLayer;
-    [SerializeField] private Color editorHitColor = Color.green;
-    [SerializeField] private Color editorDefaultColor = Color.red;
-
     private PlayerState playerState;
     private float bufferTimer = 0.0f;
     private bool hit = false;
@@ -22,7 +17,6 @@ public class AirAttack : Attack
         attackInit = false;
         bufferTimer = 0.0f;
         playerState = GetComponent<PlayerState>();
-        Gizmos.color = editorDefaultColor;
     }
 
     void Update()
@@ -51,6 +45,7 @@ public class AirAttack : Attack
 
     public override void StartAttack()
     {
+        //Debug.Log("swing");
         playerState.SetAttacking(true);
         attackInit = true;
     }
@@ -63,86 +58,24 @@ public class AirAttack : Attack
         playerState.SetAttacking(false);
     }
 
-    private bool IsFacingLeft()
+    public void CollideWith(Collider2D collision)
     {
-        return transform.rotation.y > 0.0f;
+        IHitable hitOptions = collision.GetComponentInParent<IHitable>();
+
+        if (hitOptions != null)
+        {
+            Debug.Log("AirAttackSwing");
+            hitOptions.Hit(damage);
+        }
     }
 
     private void Swing()
     {
-        Debug.Log("SWING!");
-        Collider2D[] results;
-
-        if (!IsFacingLeft())
+        for (int i = 0; i < 5; i++)
         {
-            results = Physics2D.OverlapCircleAll(new Vector2(transform.position.x
-                + hitboxOffsetX, transform.position.y + hitboxOffsetY), attackRadius, attackLayer);
-        }
-        else
-        {
-            results = Physics2D.OverlapCircleAll(new Vector2(transform.position.x
-                - hitboxOffsetX, transform.position.y + hitboxOffsetY), attackRadius, attackLayer);
-        }
-
-        if (results.Length > 0)
-        {
-            Debug.Log("HIT!");
-            hit = true;
-
-            foreach (Collider2D hit in results)
-            {
-                IHitable hitOptions = hit.GetComponentInParent<IHitable>();
-
-                if (hitOptions != null)
-                {
-                    hitOptions.Hit(damage);
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("MISS!");
-            hit = false;
-        }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        const float POINT_DIST = .005f;
-        const float LINE_THICKNESS = .015f;
-
-        if (hit)
-        {
-            Gizmos.color = editorHitColor;
-        }
-        else
-        {
-            Gizmos.color = editorDefaultColor;
-        }
-
-        Vector2 pos = new Vector2(transform.position.x, transform.position.y);
-
-        if (!IsFacingLeft())
-        {
-            pos.x += hitboxOffsetX;
-            pos.y += hitboxOffsetY;
-        }
-        else
-        {
-            pos.x -= hitboxOffsetX;
-            pos.y -= hitboxOffsetY;
-        }
-
-        float theta = 0.0f;
-        Vector2 startPos = pos + new Vector2(attackRadius * Mathf.Cos(theta), attackRadius * Mathf.Sin(theta));
-        Gizmos.DrawLine(startPos, startPos);
-
-        for (theta = POINT_DIST; theta < (Mathf.PI * 2.0f); theta += POINT_DIST)
-        {
-            float xOffset = attackRadius * Mathf.Cos(theta);
-            float yOffset = attackRadius * Mathf.Sin(theta);
-            Vector2 newPos = pos + new Vector2(xOffset, yOffset);
-            Gizmos.DrawLine(newPos - new Vector2(LINE_THICKNESS, LINE_THICKNESS), newPos);
+            hitboxes[0].SetResponder(this);
+            hitboxes[0].StartCheckingCollisions();
+            hitboxes[0].HitboxUpdate();
         }
     }
 }
