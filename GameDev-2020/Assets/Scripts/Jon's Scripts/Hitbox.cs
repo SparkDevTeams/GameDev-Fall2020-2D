@@ -7,10 +7,11 @@ public class Hitbox : MonoBehaviour
     [SerializeField] private Vector2 boxSize = Vector2.one;
     [SerializeField] private float radius = 0.5f;
     [SerializeField] private bool useCircle = false;
+    [SerializeField] private bool showEditorHitbox = true;
     [SerializeField] private LayerMask hitLayer;
-    [SerializeField] private Color hitBoxClosedColor = Color.red;
-    [SerializeField] private Color hitBoxOpenColor = Color.yellow;
-    [SerializeField] private Color hitboxCollidingColor = Color.green;
+    [SerializeField] private Color hitBoxClosedColor = new Color(191, 0, 0, 90);
+    [SerializeField] private Color hitBoxOpenColor = new Color(191, 177, 0, 90);
+    [SerializeField] private Color hitboxCollidingColor = new Color(0, 191, 0, 90);
     private IHitboxResponder responder = null;
     private ColliderState currentState = ColliderState.Closed;
 
@@ -51,6 +52,34 @@ public class Hitbox : MonoBehaviour
 
     }
 
+    public void HitboxUpdate(LayerMask customLayer)
+    {
+        if (currentState != ColliderState.Closed)
+        {
+            Collider2D[] colliders;
+
+            if (!useCircle)
+            {
+                colliders = Physics2D.OverlapBoxAll(transform.position, boxSize, transform.eulerAngles.z, customLayer);
+            }
+            else
+            {
+                colliders = Physics2D.OverlapCircleAll(transform.position, radius, customLayer);
+            }
+
+
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                if (responder != null)
+                {
+                    responder.CollideWith(colliders[i]);
+                }
+            }
+
+            currentState = colliders.Length > 0 ? ColliderState.Colliding : ColliderState.Open;
+        }
+    }
+
     public void SetResponder(IHitboxResponder newResponder) 
     {
         responder = newResponder;
@@ -86,20 +115,23 @@ public class Hitbox : MonoBehaviour
 
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        CheckGizmoColor();
-        int halfExtentMultiplier = 2;
-
-        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
-
-        if (!useCircle)
+        if (showEditorHitbox)
         {
-            Gizmos.DrawCube(Vector3.zero, new Vector2(boxSize.x * halfExtentMultiplier, boxSize.y * halfExtentMultiplier));
-        }
-        else 
-        {
-            Gizmos.DrawSphere(Vector3.zero, radius);
+            CheckGizmoColor();
+            int halfExtentMultiplier = 2;
+
+            Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
+
+            if (!useCircle)
+            {
+                Gizmos.DrawCube(Vector3.zero, new Vector2(boxSize.x * halfExtentMultiplier, boxSize.y * halfExtentMultiplier));
+            }
+            else
+            {
+                Gizmos.DrawSphere(Vector3.zero, radius);
+            }
         }
     }
 }

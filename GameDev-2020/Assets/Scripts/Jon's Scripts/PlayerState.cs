@@ -9,6 +9,7 @@ public class PlayerState : MonoBehaviour
     private bool dashing = false;
     private bool interacting = false;
     private bool attacking = false;
+    private bool grappleBouncing = false;
 
     public bool IsGrounded() 
     {
@@ -58,5 +59,15 @@ public class PlayerState : MonoBehaviour
     public void SetAttacking(bool newState)
     {
         attacking = newState;
+    }
+
+    public bool IsGrappleBouncing() 
+    {
+        return grappleBouncing;
+    }
+
+    public void SetGrappleBouncing(bool newState) 
+    {
+        grappleBouncing = newState;
     }
 }

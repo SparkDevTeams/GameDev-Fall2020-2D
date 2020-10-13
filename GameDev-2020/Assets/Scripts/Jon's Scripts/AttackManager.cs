@@ -5,11 +5,13 @@ using UnityEngine;
 public class AttackManager : MonoBehaviour
 {
     private bool attackButtonDown = false;
+    private bool grappleButtonDown = false;
     private bool downButtonPressed = false;
     private bool canAttack = true;
     private PlayerState playerState;
     private Attack basicMeleeAttack;
     private Attack diveAttack;
+    private Attack caneGrapple;
     private Attack currentAttack = null;
 
     void Start()
@@ -20,12 +22,14 @@ public class AttackManager : MonoBehaviour
         basicMeleeAttack = GetComponent<BasicAttack>();
         diveAttack = GetComponent<DiveAttack>();
         playerState = GetComponent<PlayerState>();
+        caneGrapple = GetComponent<CaneGrapple>();
     }
 
     void Update()
     {
+        grappleButtonDown = Input.GetButtonDown("Grapple");
         attackButtonDown = Input.GetButtonDown("Attack");
-        downButtonPressed = Input.GetAxis("Vertical") < 0.0f;
+        downButtonPressed = Input.GetAxisRaw("Vertical") < 0.0f;
 
         if (!playerState.IsAttacking())
         {
@@ -58,17 +62,24 @@ public class AttackManager : MonoBehaviour
         {
             if (attackButtonDown)
             {
-                if (downButtonPressed) 
+                if (downButtonPressed)
                 {
-                    if (diveAttack.CanAttack()) 
+                    if (diveAttack.CanAttack())
                     {
-                        Debug.Log("Dive");
                         selectedAttack = diveAttack;
                     }
                 }
                 else if (basicMeleeAttack.CanAttack())
                 {
                     selectedAttack = basicMeleeAttack;
+                }
+            }
+            else if (grappleButtonDown) 
+            {
+                if (caneGrapple.CanAttack()) 
+                {
+                    Debug.Log("Grapple");
+                    selectedAttack = caneGrapple;
                 }
             }
         }
