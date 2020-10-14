@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private PlayerJump jump;
     private PlayerState playerState;
+    private DimensionManager dimension;
     private DashDirection direction = DashDirection.None;
     private float dashTimer = 0.0f;
     private float dashBuffer = 0.0f;
@@ -40,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         jump = GetComponent<PlayerJump>();
         playerState = GetComponent<PlayerState>();
+        dimension = GetComponent<DimensionManager>();
         normalGravity = rb.gravityScale;
     }
 
@@ -93,6 +95,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             dashTimer = dashTime;
+            dimension.executeShift(dashTime);
             stockedDashes--;
             playerState.SetDashing(true);
 
