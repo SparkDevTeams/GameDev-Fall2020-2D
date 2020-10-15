@@ -8,6 +8,7 @@ public class SteamVent : MonoBehaviour
     [SerializeField] GameObject ventHitbox = null;
     [SerializeField] float timeToStopVenting = 0;
     [SerializeField] float timeToStartVenting = 0;
+
     private void Update()
     {
         if (beginVenting)
