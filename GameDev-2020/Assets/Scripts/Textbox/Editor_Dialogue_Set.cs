@@ -67,7 +67,7 @@ public class Editor_Dialogue_Set : Editor
                     ds.Dialogues.Remove(ds.Dialogues[i]);
                 }
 
-                if (GUILayout.Button("Add Dialogue"))
+                if (GUILayout.Button("Add Dialogue (Next)"))
                 {
                     ds.Dialogues.Insert( i+1 , new Dialogue());
                 }

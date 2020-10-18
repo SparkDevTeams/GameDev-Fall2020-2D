@@ -61,7 +61,7 @@ public class Textbox : MonoBehaviour
             return;
         }
 
-        if (Input.GetButtonDown("Continue"))
+        if (Input.GetButtonDown("Jump"))
         {
             Go = true;
         }
@@ -130,11 +130,29 @@ public class Textbox : MonoBehaviour
             }
 
             for (int c = 0; c < line.Length; c++) {
+
+                if (line[c].ToString() == "\\" ) {
+                    if ((line.Length > c + 1)) {
+                        if (line[c + 1].ToString() == "n") {
+                            Debug.Log("Textbox make newline");
+                            text.text = text.text + "\n" ;
+                            c += 1;
+                            continue;
+                        } else if (line[c + 1].ToString() == "t")
+                        {
+                            Debug.Log("Textbox make tab");
+                            text.text = text.text + "\t";
+                            c += 1;
+                            continue;
+                        }
+                    }
+                }
+
                 text.text = text.text + line[c];
 
-                if (Input.GetButton("Continue"))
+                if (Input.GetButton("Attack"))
                 {
-                    yield return new WaitForSeconds(1 / (speed * 4));
+                    yield return new WaitForSeconds(0.01f);
                 }
                 else {
                     yield return new WaitForSeconds(1 / speed);
