@@ -86,6 +86,10 @@ public class Textbox : MonoBehaviour
 
     //Get Dialogue and begin showing text
     public IEnumerator readDialogue(List<Dialogue> dialogues) {
+
+        //Disable Player Movement
+        FindObjectOfType<PlayerMovement>()?.DisableMovement();
+
         for (int d = 0; d < dialogues.Count; d++) {
 
             if (dialogues[d].Profile != null)
@@ -198,6 +202,8 @@ public class Textbox : MonoBehaviour
         }
 
         coroutine = null;
+        //Enable Player Movement
+        FindObjectOfType<PlayerMovement>()?.EnableMovement();
         gameObject.SetActive(false);
         yield break;
     }
