@@ -8,8 +8,10 @@ public class CaneGrapple : Attack, IHitboxResponder
     [SerializeField] private float maxRayCastDist = 60.0f;
     [SerializeField] private float grappleSpeed = 20.0f;
     [SerializeField] private float throwSpeed = 18.0f;
+    [SerializeField] private float cooldownTime = 0.2f;
     [SerializeField] private float minRopeDistance = 0.2f;
     private float raycastDist = 0.0f;
+    private float cooldownTimer = 0.0f;
 
     private bool locked = false;
     private bool wallHit = false;
@@ -42,6 +44,15 @@ public class CaneGrapple : Attack, IHitboxResponder
 
     void Update()
     {
+        if (cooldownTimer > 0.0f)
+        {
+            cooldownTimer -= Time.deltaTime;
+
+            if (cooldownTimer <= 0.0f) 
+            {
+                cooldownTimer = 0.0f;
+            }
+        }
     }
 
     void FixedUpdate() 
@@ -59,11 +70,14 @@ public class CaneGrapple : Attack, IHitboxResponder
                 CheckSide();
                 CheckBottom();
                 CheckTop();
-                rb.velocity = CalculateVectorTowards(grapplePoint);
 
-                if (!wallHit && !enemyHit && Vector2.Distance(startPos.position, grapplePoint) < minRopeDistance) 
+                if (!wallHit && !enemyHit && Vector2.Distance(startPos.position, grapplePoint) < minRopeDistance)
                 {
                     Break();
+                }
+                else if (!wallHit && !enemyHit) 
+                {
+                    rb.velocity = CalculateVectorTowards(grapplePoint);
                 }
             }
         }
@@ -73,6 +87,7 @@ public class CaneGrapple : Attack, IHitboxResponder
             playerState.SetAttacking(false);
             wallHit = false;
             enemyHit = false;
+            cooldownTimer = cooldownTime;
             topCheck.StopCheckingCollisions();
             sideCheck.StopCheckingCollisions();
             bottomCheck.StopCheckingCollisions();
@@ -81,7 +96,7 @@ public class CaneGrapple : Attack, IHitboxResponder
 
     public override bool CanAttack() 
     {
-        return !playerState.IsDashing() && !playerState.IsInteracting();
+        return !playerState.IsDashing() && !playerState.IsInteracting() && (cooldownTimer > 0.0f);
     }
 
     public override void StartAttack() 
@@ -110,6 +125,7 @@ public class CaneGrapple : Attack, IHitboxResponder
     {
         playerState.SetAttacking(false);
         raycastDist = 0.0f;
+        cooldownTimer = cooldownTime;
         attackInit = false;
         locked = false;
         wallHit = false;

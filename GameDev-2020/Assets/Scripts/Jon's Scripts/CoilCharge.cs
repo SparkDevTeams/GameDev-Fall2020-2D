@@ -11,11 +11,9 @@ public class CoilCharge : MonoBehaviour, IHitboxResponder
     private bool attacked = false;
     [SerializeField] private Hitbox hitbox;
     private Transform target;
-    private FollowPoint follow;
 
     void Start()
     {
-        follow = GetComponent<FollowPoint>();
         attacking = false;
         attacked = false;
     }
@@ -33,13 +31,13 @@ public class CoilCharge : MonoBehaviour, IHitboxResponder
                     hitbox.SetResponder(this);
                     hitbox.StartCheckingCollisions();
                     hitbox.HitboxUpdate();
-                    StopStrike();
+                    StopCharge();
                     attacked = true;
                 }
             }
             else
             {
-                StopStrike();
+                StopCharge();
             }
         }
         else if (attacked) 
@@ -59,18 +57,21 @@ public class CoilCharge : MonoBehaviour, IHitboxResponder
         }
     }
 
-    public void StartStrike(Transform newTarget) 
+    public void StartCharge(Transform newTarget) 
     {
-        follow.StopFollowing();
         target = newTarget;
         attacking = true;
         attacked = false;
     }
 
-    public void StopStrike() 
+    public void StopCharge() 
     {
         target = null;
         attacking = false;
-        follow.Follow();
+    }
+
+    public bool IsCharging() 
+    {
+        return attacking;
     }
 }

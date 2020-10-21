@@ -51,7 +51,8 @@ public class BasicAttack : Attack, IHitboxResponder
 
     public override bool CanAttack()
     {
-        return !playerState.IsDashing() && playerState.IsGrounded() && !playerState.IsJumping();
+        return !playerState.IsDashing() && playerState.IsGrounded() && !playerState.IsJumping() 
+                && !playerState.IsInteracting();
     }
 
     public override void StartAttack()
