@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3992194589712459271}
   - component: {fileID: 3992194589712459268}
   - component: {fileID: 3992194589712459269}
+  - component: {fileID: 9051492037520207053}
   m_Layer: 0
   m_Name: Robot Bird
   m_TagString: Untagged
@@ -98,3 +99,17 @@ MonoBehaviour:
   endPosX: 10
   duration: 1
   eggDropWaitTimeSeconds: 3
+--- !u!114 &9051492037520207053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3992194589712459274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea541165eb55241469593dac65ad4e08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectile: {fileID: 5493432591058039339, guid: 7d86507efd34e2d4f8a283199f21f4ce,
+    type: 3}
