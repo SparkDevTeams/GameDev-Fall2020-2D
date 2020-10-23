@@ -124,7 +124,8 @@ namespace UnityEditor
             if (m_PreviewGrid)
             {
                 float height = EditorGUILayout.FloatField("Cell Height", m_PreviewGrid.cellSize.y);
-                m_PreviewGrid.cellSize = new Vector3(1f, Mathf.Max(height, 0), 1f);
+                float width = EditorGUILayout.FloatField("Cell Width", m_PreviewGrid.cellSize.x);
+                m_PreviewGrid.cellSize = new Vector3(Mathf.Max(width, 0), Mathf.Max(height, 0), 1f);
             }
         }
 
