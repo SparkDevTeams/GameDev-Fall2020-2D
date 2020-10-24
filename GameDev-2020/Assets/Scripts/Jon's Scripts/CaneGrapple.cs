@@ -96,7 +96,7 @@ public class CaneGrapple : Attack, IHitboxResponder
 
     public override bool CanAttack() 
     {
-        return !playerState.IsDashing() && !playerState.IsInteracting() && (cooldownTimer > 0.0f);
+        return !playerState.IsDashing() && !playerState.IsInteracting() && (cooldownTimer <= 0.0f);
     }
 
     public override void StartAttack() 
@@ -113,9 +113,23 @@ public class CaneGrapple : Attack, IHitboxResponder
         throwDirection = new Vector2(Input.GetAxisRaw("Horizontal")
                             , Input.GetAxisRaw("Vertical")).normalized;
 
+        if (throwDirection.magnitude == 0) 
+        {
+            throwDirection = new Vector2(1.0f, 0.0f);
+        }
+
         if(!startingInAir && throwDirection.y < 0.0f) 
         {
             throwDirection = new Vector2(throwDirection.x, 0.0f).normalized;
+        }
+
+        if (throwDirection.x < 0.0f)
+        {
+            FaceLeft();
+        }
+        else if (throwDirection.x > 0.0f) 
+        {
+            FaceRight();
         }
 
         Debug.Log("Throw Dir: " + throwDirection);
@@ -280,5 +294,15 @@ public class CaneGrapple : Attack, IHitboxResponder
                 Debug.Log("Wall Bottom bounce!");
             }
         }
+    }
+
+    private void FaceRight()
+    {
+        transform.eulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
+    }
+
+    private void FaceLeft()
+    {
+        transform.eulerAngles = new Vector3(0.0f, 180.0f, 0.0f);
     }
 }

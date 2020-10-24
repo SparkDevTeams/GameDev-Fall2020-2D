@@ -20,7 +20,7 @@ public class CoilManager : MonoBehaviour
     {
         if (busy) 
         {
-            busy = charge.IsCharging();
+            busy = charge.IsCharging() || launch.IsLaunching();
 
             if (!busy) 
             {
@@ -43,9 +43,26 @@ public class CoilManager : MonoBehaviour
         }
     }
 
-    /*public void Recall()
+    public void Launch(Vector3 direction) 
     {
-        busy = false;
-        follow.Follow();
-    }*/
+        if (!busy) 
+        {
+            follow.StopFollowing();
+            launch.StartLaunch(direction);
+        }
+    }
+
+    public void Recall()
+    {
+        if (busy)
+        {
+            if (launch.IsLaunching()) 
+            {
+                launch.StopLaunch();
+            }
+
+            busy = false;
+            follow.Follow();
+        }
+    }
 }
