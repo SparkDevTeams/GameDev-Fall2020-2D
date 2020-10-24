@@ -16,6 +16,7 @@ public class RobotBird : MonoBehaviour
     private float randomTimeForEggDrop;
     private bool canDropEgg = true;
     private Vector3 birdRotation;
+    private Projectile projectile;
 
     private void Start()
     {
@@ -23,6 +24,7 @@ public class RobotBird : MonoBehaviour
         minX = transform.position.x;
         birdRotation = transform.rotation.eulerAngles;
         randomTimeForEggDrop = Random.value;
+        projectile = GetComponent<Projectile>();
     }
     private void Update()
     {
@@ -54,6 +56,7 @@ public class RobotBird : MonoBehaviour
         // If the random number falls within a certain range
         if (randomTimeForEggDrop < t + 0.01 && randomTimeForEggDrop > t - 0.01 && canDropEgg)
         {
+            projectile.ShootProjectile(new Vector2(0, -5), 0, 5, 1);
             canDropEgg = false;
             StartCoroutine(eggDropWaitTime());
             //Debug.Log(randomTimeForEggDrop);
