@@ -9,6 +9,7 @@ public class DimensionManager : MonoBehaviour
     public float currentShiftTime;
     public float maxShiftTime;
 
+    private PlayerState playerState;
     private const int positiveLayer = 8;
     private const int negativeLayer = 9;
     private const int playerLayer = 10;
@@ -20,6 +21,7 @@ public class DimensionManager : MonoBehaviour
         shifting = false;
         currentShiftTime = 0;
         maxShiftTime = 0.0f;
+        playerState = GetComponent<PlayerState>();
     }
 
     // Update is called once per frame
@@ -72,7 +74,7 @@ public class DimensionManager : MonoBehaviour
 
     public void executeShift(float customShiftTime)
     {
-        if (shifting)
+        if (playerState.IsDashing())
         {
             currentShiftTime += Time.deltaTime;
 

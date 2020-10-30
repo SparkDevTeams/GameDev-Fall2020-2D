@@ -95,7 +95,6 @@ public class PlayerMovement : MonoBehaviour
             }
 
             dashTimer = dashTime;
-            dimension.executeShift(dashTime);
             stockedDashes--;
             playerState.SetDashing(true);
 
@@ -128,7 +127,11 @@ public class PlayerMovement : MonoBehaviour
                 StopDash();
                 EnableJump();
                 dashBuffer = dashBufferTime;
-            }         
+            }
+            else 
+            {
+                dimension.executeShift(dashTime);
+            }
         }
     }
 
