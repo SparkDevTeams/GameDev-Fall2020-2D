@@ -56,6 +56,10 @@ public class HealthManager : MonoBehaviour
         return shieldHealth;
     }
 
+    public int MaxHP {
+        get { return maxHealth; }
+    }
+
     public void resetHealth(){
         shieldHealth = maxHealth;
     }

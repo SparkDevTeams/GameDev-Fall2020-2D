@@ -6,11 +6,12 @@ public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
 {
     protected const float activeDist = 12.0f;
     protected const float attackDist = 2.0f;
-    protected const float yLimit = 3.0f; //limit for activity
+    protected const float yLimit = 3f; //limit for activity
     protected const float shiftTime = 0.5f; //time for shifting
     protected const float attackTime = 0.5f; //active attack time
-    protected const float endLag = 1.0f; //lag on attack
-    protected const float jumpTime = 0.25f; //Time the actor can jump
+    protected const float startUp = 0.5f; //startup lag
+    protected const float endLag = 0.5f; //lag on attack
+    protected const float jumpTime = 0.3f; //Time the actor can jump
 
     [SerializeField]
     protected GeneralChecker floor, wall, roof;
@@ -54,7 +55,7 @@ public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
             return (
                 (FindObjectOfType<PlayerMovement>() != null) &&
                 (Mathf.Abs(Vector3.Distance(transform.position, GameObject.FindObjectOfType<PlayerMovement>().transform.position)) < activeDist) &&
-                (Mathf.Abs(GameObject.FindObjectOfType<PlayerMovement>().transform.position.y - transform.position.y) < yLimit)
+                (Mathf.Abs(GameObject.FindObjectOfType<PlayerMovement>().transform.position.y - transform.position.y) < yLimit) 
                 );
         }
     }
@@ -100,14 +101,24 @@ public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
         if (rb == null) {
             rb = gameObject.AddComponent<Rigidbody2D>();
         }
-
+        baseAttack.SetActive(false);
         sprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!NearPlayer || acting) {
+        SpriteUpdate();
+
+        if (!NearPlayer) {
+            return;
+        }
+
+        floor.gameObject.layer = gameObject.layer;
+        roof.gameObject.layer = gameObject.layer;
+        wall.gameObject.layer = gameObject.layer;
+
+        if (acting) {
             return;
         }
 
@@ -124,8 +135,6 @@ public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
             }
         }
 
-        SpriteUpdate();
-
         if (InAttackingDistance) {
             //Attack Player
             traveling = false;
@@ -136,7 +145,9 @@ public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
                 return;
             }
 
-            action = StartCoroutine(Attack());
+            if (floor.Grounded){
+                action = StartCoroutine(Attack());
+            }
 
             return;
         }
@@ -149,8 +160,8 @@ public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
             return;
         }
 
-        rb.velocity = new Vector2( speed * Direction , rb.velocity.y);
-
+        rb.velocity = new Vector2(speed * Direction, rb.velocity.y);
+        
         if (wall.Grounded && floor.Grounded) {
             action = StartCoroutine(Jump());
         }
@@ -171,8 +182,17 @@ public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
 
         float t = 0;
 
+        while (t < startUp)
+        {
+            t += Time.fixedUnscaledDeltaTime * Time.timeScale;
+            yield return new WaitForFixedUpdate();
+        }
+
         //TODO : Instantiate Hitbox and start animation
         Debug.Log(gameObject.name + " I, WarpSword! Attack!");
+        baseAttack.SetActive(true);
+        t = 0;
+
         while (t < attackTime)
         {
             t += Time.fixedUnscaledDeltaTime * Time.timeScale;
@@ -180,6 +200,8 @@ public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
         }
 
         //TODO : Disentegrate Hitbox
+        baseAttack.SetActive(false);
+        t = 0;
 
         //Endlag for opening
         while (t < endLag)
