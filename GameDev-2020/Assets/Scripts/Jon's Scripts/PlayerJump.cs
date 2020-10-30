@@ -84,11 +84,13 @@ public class PlayerJump : MonoBehaviour
         if (jumpInputTimer > 0.0f && playerState.IsGrounded() && !playerState.IsJumping()) 
         {
             jumpInputTimer = 0.0f;
+            playerState.SetGrounded(false);
+            groundedTimer = 0.0f;
             StartJumping();
             Jump();
         }
 
-        if (jumpButtonHeld && playerState.IsJumping()) 
+        if (jumpButtonHeld && playerState.IsJumping() && !jumpButtonUp) 
         {
             if (jumpTimer > 0.0f && !HasTouchedRoof())
             {
