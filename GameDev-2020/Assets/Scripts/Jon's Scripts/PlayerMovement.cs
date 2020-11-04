@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float walkSpeed = 3.0f;
     [SerializeField] private float dashSpeed = 6.0f;
     [SerializeField] private float dashTime = 0.15f;
-    [SerializeField] private float dashBufferTime = 0.1f;
+    //[SerializeField] private float dashBufferTime = 0.1f;
     [SerializeField] private int totalAirDashes = 2;
     [SerializeField] private int totalDashes = 2;
 
@@ -17,10 +17,10 @@ public class PlayerMovement : MonoBehaviour
     private DimensionManager dimension;
     private DashDirection direction = DashDirection.None;
     private float dashTimer = 0.0f;
-    private float dashBuffer = 0.0f;
+    //private float dashBuffer = 0.0f;
     private float normalGravity;
     private int airDashes;
-    private int stockedDashes;
+    //private int stockedDashes;
     private bool leftButtonPressed = false;
     private bool rightButtonPressed = false;
     private bool dashButtonDown = false;
@@ -31,9 +31,9 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         dashTimer = 0.0f;
-        dashBuffer = 0.0f;
+        //dashBuffer = 0.0f;
         airDashes = totalAirDashes;
-        stockedDashes = totalDashes;
+        //stockedDashes = totalDashes;
         leftButtonPressed = false;
         rightButtonPressed = false;
         dashButtonDown = false;
@@ -50,6 +50,11 @@ public class PlayerMovement : MonoBehaviour
         leftButtonPressed = Input.GetAxisRaw("Horizontal") < 0.0f && inputEnabled;
         rightButtonPressed = Input.GetAxisRaw("Horizontal") > 0.0f && inputEnabled;
         dashButtonDown = Input.GetButtonDown("Dash") && inputEnabled;
+
+        if (dashButtonDown) 
+        {
+            Debug.Log("Dash down");
+        }
     }
 
     void FixedUpdate()
@@ -59,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
             ResetAirDash();
         }
 
-        if (dashBuffer > 0.0f) 
+        /*if (dashBuffer > 0.0f) 
         {
             dashBuffer -= Time.deltaTime;
 
@@ -68,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
                 dashBuffer = 0.0f;
                 ResetDash();
             }
-        }
+        }*/
 
         if (inputEnabled && ((leftButtonPressed && rightButtonPressed)
             || (!leftButtonPressed && !rightButtonPressed)))
@@ -84,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
             MoveRight();
         }
 
-        if (dashButtonDown && !playerState.IsDashing() && stockedDashes > 0
+        if (dashButtonDown && !playerState.IsDashing()/* && stockedDashes > 0*/
             && (playerState.IsGrounded() || (!playerState.IsGrounded() && airDashes > 0)))
         {
             DisableJump();
@@ -95,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             dashTimer = dashTime;
-            stockedDashes--;
+            //stockedDashes--;
             playerState.SetDashing(true);
 
             if (!IsFacingLeft())
@@ -126,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 StopDash();
                 EnableJump();
-                dashBuffer = dashBufferTime;
+                //dashBuffer = dashBufferTime;
             }
             else 
             {
@@ -149,13 +154,13 @@ public class PlayerMovement : MonoBehaviour
         EnableJump();
     }
 
-    public void StopAndResetDash()
+    /*public void StopAndResetDash()
     {
         StopDash();
         dashBuffer = 0.0f;
         ResetAirDash();
         ResetDash();
-    }
+    }*/
 
     public void ResetGravityDefault() 
     {
@@ -198,10 +203,10 @@ public class PlayerMovement : MonoBehaviour
         airDashes = totalAirDashes;
     }
 
-    private void ResetDash()
+    /*private void ResetDash()
     {
         stockedDashes = totalDashes;
-    }
+    }*/
 
     private void StopDash() 
     {
