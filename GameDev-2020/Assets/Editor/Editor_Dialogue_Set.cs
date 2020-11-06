@@ -83,5 +83,21 @@ public class Editor_Dialogue_Set : Editor
             ds.Dialogues.Add(new Dialogue());
         }
 
+        EditorGUILayout.Separator();
+        if (GUILayout.Button("Add Option"))
+        {
+            ds.LinkedSet.Add (new LinkSet());
+        }
+        
+        foreach (LinkSet l in ds.LinkedSet) {
+            l.option = EditorGUILayout.TextField("Text", l.option);
+            l.linkedSet = (Dialogue_Set)EditorGUILayout.ObjectField("Linked Set", l.linkedSet, typeof(Dialogue_Set), false);
+        }
+
+        if (GUILayout.Button("Remove Option"))
+        {
+            ds.LinkedSet.RemoveAt(ds.LinkedSet.Count - 1);
+        }
+
     }
 }
