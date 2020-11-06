@@ -107,6 +107,7 @@ public class Textbox : MonoBehaviour
         //Disable Player Movement
         FindObjectOfType<PlayerMovement>()?.DisableMovement();
         FindObjectOfType<PlayerState>()?.SetInteracting(true);
+
         for (int d = 0; d < dialogues.Count; d++) {
 
             if (dialogues[d].Profile != null)
