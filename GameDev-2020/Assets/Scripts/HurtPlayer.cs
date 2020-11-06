@@ -8,6 +8,7 @@ public class HurtPlayer : MonoBehaviour
     [SerializeField] private int damage;
     [SerializeField] private float knockX;
     [SerializeField] private float knockY;
+    [SerializeField] private bool omniDimensional = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +26,19 @@ public class HurtPlayer : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            health.damagePlayer(damage);
+            if (!omniDimensional)
+            {
+                if (other.gameObject.GetComponent<DimensionManager>().getDimensionID() == 1 && transform.parent.gameObject.layer == 9)
+                {
+                    return;
+                }
+                if (other.gameObject.GetComponent<DimensionManager>().getDimensionID() == 2 && transform.parent.gameObject.layer == 8)
+                {
+                    return;
+                }
+            }
+
+                health.damagePlayer(damage);
             knockBack(other);
         }
 
