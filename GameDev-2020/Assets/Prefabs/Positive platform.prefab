@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2798562686203177488}
   - component: {fileID: 2798562686203177489}
   - component: {fileID: 2798562686203177491}
-  - component: {fileID: 2798562686203177490}
+  - component: {fileID: 6230558538502656322}
   m_Layer: 8
   m_Name: Positive platform
   m_TagString: Ground
@@ -110,7 +110,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 6.047313, y: 0.86483955}
   m_EdgeRadius: 0
---- !u!114 &2798562686203177490
+--- !u!114 &6230558538502656322
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,3 +122,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b979b420575afd9418adc456fdbcfa4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colored: 1

@@ -12,6 +12,7 @@ public class DimensionManager : MonoBehaviour
     private const int positiveLayer = 8;
     private const int negativeLayer = 9;
     private const int playerLayer = 10;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +48,7 @@ public class DimensionManager : MonoBehaviour
 
     public void executeShift()
     {
+
         if (shifting)
         {
             currentShiftTime += Time.deltaTime;
@@ -72,8 +74,10 @@ public class DimensionManager : MonoBehaviour
 
     public void executeShift(float customShiftTime)
     {
+
         if (shifting)
         {
+            Debug.Log("Shifting");
             currentShiftTime += Time.deltaTime;
 
             if (currentShiftTime > customShiftTime)
@@ -116,7 +120,7 @@ public class DimensionManager : MonoBehaviour
         }
     }
 
-    public int GetDimensionID() 
+    public int GetDimensionID()
     {
         return dimensionID;
     }

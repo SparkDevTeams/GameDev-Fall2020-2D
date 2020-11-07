@@ -96,7 +96,7 @@ public class CaneGrapple : Attack, IHitboxResponder
 
     public override bool CanAttack() 
     {
-        return !playerState.IsDashing() && !playerState.IsInteracting() && (cooldownTimer > 0.0f);
+        return !playerState.IsDashing() && !playerState.IsInteracting() && (cooldownTimer >= 0.0f);
     }
 
     public override void StartAttack() 

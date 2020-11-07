@@ -32,21 +32,25 @@ public class MovingHazard: MonoBehaviour
         if (transform.position == pos1.position)
         {
             nextPos = pos2.position;
+            Debug.Log("1");
 
         }
 
         if (transform.position == pos2.position)
         {
             nextPos = pos3.position;
+            Debug.Log("2");
         }
 
         if(transform.position == pos3.position)
         {
             nextPos = pos4.position;
+            Debug.Log("3");
         }
 
         if(transform.position == pos4.position){
             nextPos = pos1.position;
+            Debug.Log("4");
         }
 
         transform.position = Vector3.MoveTowards(transform.position, nextPos, speed * Time.deltaTime);

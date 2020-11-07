@@ -71,7 +71,7 @@ public class DiveAttack : Attack, IHitboxResponder
                     }
                 }
 
-                if (attackButtonUp && !isDiving) 
+                if (!attackButtonPressed && !isDiving) 
                 {
                     chargeTimer = 0.0f;
                     isDiving = true;
