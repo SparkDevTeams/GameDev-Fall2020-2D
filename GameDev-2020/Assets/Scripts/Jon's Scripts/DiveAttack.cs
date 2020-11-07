@@ -22,7 +22,6 @@ public class DiveAttack : Attack, IHitboxResponder
     private bool hasLanded = false;
     private bool landing = false;
     private bool attackButtonPressed = false;
-    private bool attackButtonUp = false;
     private bool chargedDive = false;
 
     void Start()
@@ -35,7 +34,6 @@ public class DiveAttack : Attack, IHitboxResponder
     void Update()
     {
         attackButtonPressed = Input.GetButton("Attack");
-        attackButtonUp = Input.GetButtonUp("Attack");
 
         if (isDiving)
         {
@@ -71,7 +69,7 @@ public class DiveAttack : Attack, IHitboxResponder
                     }
                 }
 
-                if (!attackButtonPressed && !isDiving) 
+                else if (!attackButtonPressed && !isDiving) 
                 {
                     chargeTimer = 0.0f;
                     isDiving = true;

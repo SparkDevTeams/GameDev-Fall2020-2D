@@ -229,7 +229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5102539564515587891
 Transform:
   m_ObjectHideFlags: 0
@@ -239,7 +239,7 @@ Transform:
   m_GameObject: {fileID: 5102539564515587890}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.01, y: 0.33, z: 0}
-  m_LocalScale: {x: 0.76, y: 0.21, z: 1}
+  m_LocalScale: {x: 0.62, y: 0.09, z: 1}
   m_Children: []
   m_Father: {fileID: 6586343681194656548}
   m_RootOrder: 9
@@ -465,7 +465,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6586343681142365198
 Transform:
   m_ObjectHideFlags: 0
@@ -474,8 +474,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6586343681142365193}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.01, y: -0.32, z: 0}
-  m_LocalScale: {x: 0.76, y: 0.21, z: 1}
+  m_LocalPosition: {x: 0.01, y: -0.31, z: 0}
+  m_LocalScale: {x: 0.62, y: 0.09, z: 1}
   m_Children: []
   m_Father: {fileID: 6586343681194656548}
   m_RootOrder: 0
@@ -876,7 +876,7 @@ MonoBehaviour:
   jumpTime: 0.3
   jumpSpeed: 8
   jumpForgiveness: 0.1
-  groundedForgiveness: 0.1
+  groundedForgiveness: 0.15
   fallSpeed: 60
   groundCheck: {fileID: 6586343681142365198}
   roofCheck: {fileID: 5102539564515587891}
