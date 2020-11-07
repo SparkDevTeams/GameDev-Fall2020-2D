@@ -68,6 +68,7 @@ public class DiveAttack : Attack, IHitboxResponder
                         diveHitbox.StartCheckingCollisions();
                     }
                 }
+
                 else if (!attackButtonPressed && !isDiving) 
                 {
                     chargeTimer = 0.0f;

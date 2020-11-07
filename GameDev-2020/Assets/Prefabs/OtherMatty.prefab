@@ -599,6 +599,7 @@ GameObject:
   - component: {fileID: 5102539566123297639}
   - component: {fileID: 7749215723939127922}
   - component: {fileID: 8288914463694751123}
+  - component: {fileID: -2368617033551550002}
   m_Layer: 10
   m_Name: OtherMatty
   m_TagString: Player
@@ -964,6 +965,18 @@ MonoBehaviour:
   - {fileID: 8288914464252478497}
   damage: 3
   attackBuffer: 0.1
+--- !u!114 &-2368617033551550002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6586343681194656545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a233d1a2258dc0f43bc993b2afc07c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6586343681750458308
 GameObject:
   m_ObjectHideFlags: 0

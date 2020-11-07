@@ -5,13 +5,25 @@ using UnityEngine;
 public class VisualDimension : MonoBehaviour
 {
     private DimensionManager dimension;
-    private Color color;
+    private Color32 color;
     private int dimensionReference;
+
+    private byte red;
+    private byte blue;
+    private byte green;
+
+    [SerializeField]
+    private bool colored;
     // Start is called before the first frame update
     void Start()
     {
         dimension = FindObjectOfType<DimensionManager>();
-        color = GetComponent<SpriteRenderer>().material.color;
+        color = GetComponent<Renderer>().material.color;
+
+        red = 0;
+        blue = 0;
+        green = 0;
+
     }
 
     // Update is called once per frame
@@ -19,18 +31,56 @@ public class VisualDimension : MonoBehaviour
     {
         dimensionReference = checkDimension();
 
-        if (dimensionReference != this.gameObject.layer)
+        if (!colored)
         {
-            color = new Color(color.r, color.b, color.g, 0.3f);
+            switch (this.gameObject.layer)
+            {
+                case 8:
+                    setColors(99, 155, 255);
+                    //setColors(color.r, color.g, color.b);
+                    break;
+                case 9:
+                    setColors(253, 243, 55);
+                    //setColors(color.r, color.g, color.b);
+                    break;
+            }
         }
         else
         {
-            color = new Color(color.r, color.b, color.g, 1f);
+            switch (this.gameObject.layer)
+            {
+                case 8:
+                    //setColors(255, 0, 0);
+                    setColors(color.r, color.g, color.b);
+                    break;
+                case 9:
+                    //setColors(253, 243, 55);
+                    setColors(color.r, color.g, color.b);
+                    break;
+            }
+        }
+
+
+        //Debug.Log("visual script rgb: " + color.r + "-" + color.g + "-" + color.b);
+
+        if (dimensionReference != this.gameObject.layer)
+        {
+            color = new Color32(red, green, blue, 100);
+            //Debug.Log(red + "-" + green + "-" + blue);
+
+
+        }
+        else
+        {
+            color = new Color32(red, green, blue, 255);
+            //Debug.Log(red + "-" + green + "-" + blue);
         }
 
 
 
-        GetComponent<SpriteRenderer>().material.color = color;
+
+        GetComponent<Renderer>().material.color = color;
+        //Debug.Log("visual script rgb: " + color.r + "-" + color.g + "-" + color.b);
         //GetComponent<SpriteRenderer>().material.color.a = 0.2f;
     }
 
@@ -41,13 +91,24 @@ public class VisualDimension : MonoBehaviour
         if (dimension.getDimensionID() == 1)
         {
             temp = 8;
+
         }
         else if (dimension.getDimensionID() == 2)
         {
             temp = 9;
+
         }
 
         return temp;
 
+    }
+
+    private void setColors(byte paramRed, byte paramGreen, byte paramBlue)
+    {
+        red = paramRed;
+        blue = paramBlue;
+        green = paramGreen;
+
+        //Debug.Log(red + "-" + green + "-" + blue);
     }
 }
