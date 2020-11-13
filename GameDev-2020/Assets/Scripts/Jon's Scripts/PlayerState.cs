@@ -10,6 +10,7 @@ public class PlayerState : MonoBehaviour
     private bool interacting = false;
     private bool attacking = false;
     private bool grappleBouncing = false;
+    private bool knockback = false;
 
     public bool IsGrounded() 
     {
@@ -69,5 +70,15 @@ public class PlayerState : MonoBehaviour
     public void SetGrappleBouncing(bool newState) 
     {
         grappleBouncing = newState;
+    }
+
+    public bool IsKnockback()
+    {
+        return knockback;
+    }
+
+    public void SetKnockback(bool newState)
+    {
+        knockback = newState;
     }
 }

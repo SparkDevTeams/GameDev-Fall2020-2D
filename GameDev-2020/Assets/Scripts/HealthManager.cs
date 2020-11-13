@@ -8,8 +8,10 @@ public class HealthManager : MonoBehaviour
     [SerializeField] private bool isHit;
     [SerializeField] private int maxHealth;
 
-    [SerializeField] private float invincibilityTime;
+    [SerializeField] private float tempInvincibilityTime;
     [SerializeField] private float currentTimer;
+    private bool enemyBodyInvincibility = false;
+    private bool totalInvincibility = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +33,7 @@ public class HealthManager : MonoBehaviour
         {
             currentTimer += Time.deltaTime;
 
-            if (currentTimer >= invincibilityTime)
+            if (currentTimer >= tempInvincibilityTime)
             {
                 isHit = false;
                 currentTimer = 0;
@@ -51,12 +53,42 @@ public class HealthManager : MonoBehaviour
 
     }
 
+    public void bodyBoxDamagePlayer(int incomingDamage) 
+    {
+        if (!isHit && !enemyBodyInvincibility)
+        {
+            shieldHealth -= incomingDamage;
+            isHit = true;
+        }
+    }
+
     public int getShieldHealth()
     {
         return shieldHealth;
     }
 
-    public void resetHealth(){
+    public void resetHealth()
+    {
         shieldHealth = maxHealth;
+    }
+
+    public void enableEnemyBodyInvincibility() 
+    {
+        enemyBodyInvincibility = true;
+    }
+
+    public void disableEnemyBodyInvincibility() 
+    {
+        enemyBodyInvincibility = false;
+    }
+
+    public void enableTotalInvincibility() 
+    {
+        totalInvincibility = true;
+    }
+
+    public void disableTotalInvincibility()
+    {
+        totalInvincibility = false;
     }
 }

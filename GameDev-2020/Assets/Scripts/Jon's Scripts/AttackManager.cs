@@ -29,8 +29,10 @@ public class AttackManager : MonoBehaviour
 
     void Update()
     {
-        grappleButtonDown = Input.GetButtonDown("Grapple");
-        attackButtonDown = Input.GetButtonDown("Attack");
+        grappleButtonDown = Input.GetButtonDown("Grapple") && !playerState.IsInteracting()
+                            && !playerState.IsKnockback();
+        attackButtonDown = Input.GetButtonDown("Attack") && !playerState.IsInteracting()
+                            && !playerState.IsKnockback(); ;
         downButtonPressed = Input.GetAxisRaw("Vertical") < 0.0f;
 
         if (!playerState.IsAttacking())
@@ -95,11 +97,26 @@ public class AttackManager : MonoBehaviour
 
     public void StopAttacking() 
     {
+        if (currentAttack != null) 
+        {
+            currentAttack.Break();
+            currentAttack = null;
+        }
+
         canAttack = false;
     }
 
     public void StartAttacking() 
     {
         canAttack = true;
+    }
+
+    public void StopCurrentAttack() 
+    {
+        if (currentAttack != null) 
+        {
+            currentAttack.Break();
+            currentAttack = null;
+        }
     }
 }
