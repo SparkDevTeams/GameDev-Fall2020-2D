@@ -119,6 +119,7 @@ public class GrappleBounce : MonoBehaviour
     public void StartWallBounce() 
     {
         movement.DisableMovement();
+        movement.ResetAirDash();
         rb.gravityScale = 0.0f;
         playerState.SetGrappleBouncing(true);
         wallBouncing = true;
@@ -130,6 +131,7 @@ public class GrappleBounce : MonoBehaviour
     public void StartCeilingBounce() 
     {
         movement.DisableMovement();
+        movement.ResetAirDash();
         rb.gravityScale = 0.0f;
         playerState.SetGrappleBouncing(true);
         wallBouncing = false;
@@ -140,6 +142,7 @@ public class GrappleBounce : MonoBehaviour
     public void StartFloorBounce() 
     {
         movement.DisableMovement();
+        movement.ResetAirDash();
         rb.gravityScale = 0.0f;
         playerState.SetGrappleBouncing(true);
         wallBouncing = false;

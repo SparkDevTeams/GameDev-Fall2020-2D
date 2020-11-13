@@ -198,7 +198,7 @@ public class PlayerMovement : MonoBehaviour
         FaceRight();
     }
 
-    private void ResetAirDash() 
+    public void ResetAirDash() 
     {
         airDashes = totalAirDashes;
     }

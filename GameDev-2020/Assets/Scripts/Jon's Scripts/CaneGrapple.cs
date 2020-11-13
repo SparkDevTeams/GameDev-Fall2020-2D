@@ -9,9 +9,11 @@ public class CaneGrapple : Attack, IHitboxResponder
     [SerializeField] private float grappleSpeed = 20.0f;
     [SerializeField] private float throwSpeed = 18.0f;
     [SerializeField] private float cooldownTime = 0.2f;
+    [SerializeField] private float enemyBodyInvincibilityTime = 0.12f;
     [SerializeField] private float minRopeDistance = 0.2f;
     private float raycastDist = 0.0f;
     private float cooldownTimer = 0.0f;
+    private float enemyBodyInvincibilityTimer = 0.0f;
 
     private bool locked = false;
     private bool wallHit = false;
@@ -22,6 +24,7 @@ public class CaneGrapple : Attack, IHitboxResponder
     private DimensionManager dimension;
     private PlayerState playerState;
     private PlayerMovement movement;
+    private HealthManager health;
     private Rigidbody2D rb;
     private GrappleBounce bounce;
     private LayerMask currentLayer;
@@ -32,6 +35,7 @@ public class CaneGrapple : Attack, IHitboxResponder
     [SerializeField] private LayerMask positiveLayer;
     [SerializeField] private LayerMask negativeLayer;
     [SerializeField] private LayerMask nullLayer;
+    [SerializeField] private LayerMask nonGrappleLayer;
 
     void Start()
     {
@@ -40,6 +44,7 @@ public class CaneGrapple : Attack, IHitboxResponder
         movement = GetComponent<PlayerMovement>();
         rb = GetComponent<Rigidbody2D>();
         bounce = GetComponent<GrappleBounce>();
+        health = GetComponent<HealthManager>();
     }
 
     void Update()
@@ -51,6 +56,17 @@ public class CaneGrapple : Attack, IHitboxResponder
             if (cooldownTimer <= 0.0f) 
             {
                 cooldownTimer = 0.0f;
+            }
+        }
+
+        if (enemyBodyInvincibilityTimer > 0.0f)
+        {
+            enemyBodyInvincibilityTimer -= Time.deltaTime;
+
+            if (enemyBodyInvincibilityTimer <= 0.0f)
+            {
+                enemyBodyInvincibilityTimer = 0.0f;
+                health.disableEnemyBodyInvincibility();
             }
         }
     }
@@ -88,6 +104,16 @@ public class CaneGrapple : Attack, IHitboxResponder
             wallHit = false;
             enemyHit = false;
             cooldownTimer = cooldownTime;
+
+            if (enemyHit)
+            {
+                enemyBodyInvincibilityTimer = enemyBodyInvincibilityTime;
+            }
+            else 
+            {
+                health.disableEnemyBodyInvincibility();
+            }
+
             topCheck.StopCheckingCollisions();
             sideCheck.StopCheckingCollisions();
             bottomCheck.StopCheckingCollisions();
@@ -96,7 +122,7 @@ public class CaneGrapple : Attack, IHitboxResponder
 
     public override bool CanAttack() 
     {
-        return !playerState.IsDashing() && !playerState.IsInteracting() && (cooldownTimer <= 0.0f);
+        return !playerState.IsDashing() && (cooldownTimer <= 0.0f);
     }
 
     public override void StartAttack() 
@@ -115,7 +141,14 @@ public class CaneGrapple : Attack, IHitboxResponder
 
         if (throwDirection.magnitude == 0) 
         {
-            throwDirection = new Vector2(1.0f, 0.0f);
+            if (IsFacingLeft())
+            {
+                throwDirection = new Vector2(-1.0f, 0.0f);
+            }
+            else
+            {
+                throwDirection = new Vector2(1.0f, 0.0f);
+            }
         }
 
         if(!startingInAir && throwDirection.y < 0.0f) 
@@ -140,6 +173,8 @@ public class CaneGrapple : Attack, IHitboxResponder
         playerState.SetAttacking(false);
         raycastDist = 0.0f;
         cooldownTimer = cooldownTime;
+        enemyBodyInvincibilityTimer = 0.0f;
+        health.disableEnemyBodyInvincibility();
         attackInit = false;
         locked = false;
         wallHit = false;
@@ -196,20 +231,28 @@ public class CaneGrapple : Attack, IHitboxResponder
 
         if (hit.collider != null)
         {
-            grapplePoint = hit.point;
-            locked = true;
-            topCheck.SetResponder(this);
-            topCheck.StartCheckingCollisions();
-            sideCheck.SetResponder(this);
-            sideCheck.StartCheckingCollisions();
-
-            if (startingInAir)
+            if (nonGrappleLayer == (nonGrappleLayer | (1 << hit.collider.gameObject.layer)))
             {
-                bottomCheck.SetResponder(this);
-                bottomCheck.StartCheckingCollisions();
+                Break();
             }
+            else
+            {
+                grapplePoint = hit.point;
+                locked = true;
+                health.enableEnemyBodyInvincibility();
+                topCheck.SetResponder(this);
+                topCheck.StartCheckingCollisions();
+                sideCheck.SetResponder(this);
+                sideCheck.StartCheckingCollisions();
 
-            Debug.DrawLine(startPos.position, startPos.position + (throwDirection * raycastDist), Color.green);
+                if (startingInAir)
+                {
+                    bottomCheck.SetResponder(this);
+                    bottomCheck.StartCheckingCollisions();
+                }
+
+                Debug.DrawLine(startPos.position, startPos.position + (throwDirection * raycastDist), Color.green);
+            }
         }
         else 
         {
@@ -304,5 +347,10 @@ public class CaneGrapple : Attack, IHitboxResponder
     private void FaceLeft()
     {
         transform.eulerAngles = new Vector3(0.0f, 180.0f, 0.0f);
+    }
+
+    private bool IsFacingLeft()
+    {
+        return transform.forward.x < 0.0f;
     }
 }
