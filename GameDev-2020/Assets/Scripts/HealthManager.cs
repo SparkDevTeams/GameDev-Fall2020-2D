@@ -40,6 +40,11 @@ public class HealthManager : MonoBehaviour
             }
         }
 
+        if(shieldHealth > maxHealth)
+        {
+            shieldHealth = maxHealth;
+        }
+
     }
 
     //Function that handles damaging the player based on the incoming damage value if they have not been hit recently (Depending on the invincibility time)
