@@ -783,6 +783,7 @@ MonoBehaviour:
   grappleSpeed: 10
   throwSpeed: 18
   cooldownTime: 0.2
+  enemyBodyInvincibilityTime: 0.12
   minRopeDistance: 0.2
   startPos: {fileID: 7024776563343516177}
   sideCheck: {fileID: 3104378447827679377}
@@ -797,6 +798,9 @@ MonoBehaviour:
   nullLayer:
     serializedVersion: 2
     m_Bits: 6144
+  nonGrappleLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &6586343681194659037
 Animator:
   serializedVersion: 3
@@ -858,7 +862,6 @@ MonoBehaviour:
   walkSpeed: 5
   dashSpeed: 15
   dashTime: 0.25
-  dashBufferTime: 0.1
   totalAirDashes: 2
   totalDashes: 2
 --- !u!114 &6586343681194656554
@@ -904,6 +907,15 @@ MonoBehaviour:
   canAttackBreak: 0
   diveHitbox: {fileID: 6949242444860254485}
   landingHitbox: {fileID: 250047027521022062}
+  positiveLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  negativeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  nullLayer:
+    serializedVersion: 2
+    m_Bits: 0
   damage: 8
   chargedDamage: 8
   diveTopSpeed: 25
@@ -927,6 +939,15 @@ MonoBehaviour:
   hitbox: {fileID: 5102539566123297637}
   damage: 5
   attackBuffer: 0.1
+  positiveLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  negativeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  nullLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &7749215723939127922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -942,7 +963,7 @@ MonoBehaviour:
   shieldHealth: 200
   isHit: 0
   maxHealth: 10
-  invincibilityTime: 0.8
+  tempInvincibilityTime: 1
   currentTimer: 0
 --- !u!114 &8288914463694751123
 MonoBehaviour:
@@ -965,6 +986,15 @@ MonoBehaviour:
   - {fileID: 8288914464252478497}
   damage: 3
   attackBuffer: 0.1
+  positiveLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  negativeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  nullLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &-2368617033551550002
 MonoBehaviour:
   m_ObjectHideFlags: 0
