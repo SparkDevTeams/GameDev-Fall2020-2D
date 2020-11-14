@@ -47,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        
         leftButtonPressed = Input.GetAxisRaw("Horizontal") < 0.0f && inputEnabled;
         rightButtonPressed = Input.GetAxisRaw("Horizontal") > 0.0f && inputEnabled;
         dashButtonDown = Input.GetButtonDown("Dash") && inputEnabled;
@@ -59,6 +60,8 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        //dimension.executeShift(dashTime);
+
         if (playerState.IsGrounded() && dashTimer <= 0.0f) 
         {
             ResetAirDash();
@@ -102,6 +105,7 @@ public class PlayerMovement : MonoBehaviour
             dashTimer = dashTime;
             //stockedDashes--;
             playerState.SetDashing(true);
+            Debug.Log("Is it dashing: "+playerState.IsDashing());
 
             if (!IsFacingLeft())
             {
@@ -135,9 +139,12 @@ public class PlayerMovement : MonoBehaviour
             }
             else 
             {
-                dimension.executeShift(dashTime);
+                //dimension.executeShift(dashTime);
+               
             }
         }
+
+        //dimension.dashShift();
     }
 
     public void DisableMovement()

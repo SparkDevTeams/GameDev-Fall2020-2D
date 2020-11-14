@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1252588746478173176}
   - component: {fileID: 1252588746478173179}
-  - component: {fileID: 1252588746478173178}
   - component: {fileID: 1252588746478173177}
+  - component: {fileID: 3517512610251319314}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -85,20 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1252588746478173178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252588746478173173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeae48834dcf116448113827fd8b7805, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectile: {fileID: 5493432591058039339, guid: 08728c7b728b22d459d08d1ce19d8d6c,
-    type: 3}
 --- !u!114 &1252588746478173177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,3 +97,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e95f77c109b9e8445b509ba3c048336a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  velocityX: -15
+  velocityY: 0
+  timeBetweenShots: 2
+  timeUntilDissipate: 5
+  amountOfProjectiles: 50
+--- !u!114 &3517512610251319314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252588746478173173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e99dce374045503488efe97aefccf15d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectile: {fileID: 5493432591058039339, guid: 188369dc1ca41844a9797b0d9122e73f,
+    type: 3}

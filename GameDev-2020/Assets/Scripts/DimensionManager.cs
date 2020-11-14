@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class DimensionManager : MonoBehaviour
 {
-    private int dimensionID;
+    public int dimensionID;
     public bool shifting;
     public float currentShiftTime;
     public float maxShiftTime;
+    public int tempId;
+    public int placeholderID;
+    public bool dashing;
 
     private PlayerState playerState;
     private const int positiveLayer = 8;
@@ -18,11 +21,15 @@ public class DimensionManager : MonoBehaviour
     void Start()
     {
         dimensionID = 1;
+        placeholderID = dimensionID;
         checkDimension();
         shifting = false;
+        dashing = false;
         currentShiftTime = 0;
         maxShiftTime = 0.0f;
-        playerState = GetComponent<PlayerState>();
+        //playerState = GetComponent<PlayerState>();
+        playerState = FindObjectOfType<PlayerState>();
+        tempId = 0;
     }
 
     // Update is called once per frame
@@ -76,17 +83,47 @@ public class DimensionManager : MonoBehaviour
 
     public void executeShift(float customShiftTime)
     {
-
+        //tempID = dimensionID;
         if (playerState.IsDashing())
         {
             Debug.Log("Shifting");
             currentShiftTime += Time.deltaTime;
+            //dimensionID = 0;
 
             if (currentShiftTime > customShiftTime)
             {
                 currentShiftTime = 0;
                 shifting = false;
-                dimensionID *= -1;
+                //dimensionID = tempID;
+
+                placeholderID++;
+
+                if (dimensionID > 2)
+                {
+                    dimensionID = 1;
+                }
+
+                checkDimension();
+
+            }
+
+        }
+        
+    }
+
+    public void dashShift(){
+        if(playerState.IsDashing()){
+            if(!dashing){
+                tempId = dimensionID;
+                dimensionID = 0;
+                dashing = true;
+                Debug.Log(dashing);
+            }
+        }
+        else
+            {
+                dashing = false;
+                dimensionID = tempId;
 
                 dimensionID++;
 
@@ -98,7 +135,6 @@ public class DimensionManager : MonoBehaviour
                 checkDimension();
 
             }
-        }
     }
 
     public void checkDimension()

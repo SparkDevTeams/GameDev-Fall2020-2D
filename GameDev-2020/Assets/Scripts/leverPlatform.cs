@@ -16,7 +16,7 @@ public class leverPlatform : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //currentLever=FindObjectOfType<leverBehavior>();
+        currentLever=FindObjectOfType<leverBehavior>();
     }
 
     // Update is called once per frame
