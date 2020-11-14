@@ -159,9 +159,10 @@ public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
             action = StartCoroutine(Shift());
             return;
         }
+        if (!(Mathf.Abs(GameObject.FindObjectOfType<PlayerMovement>().transform.position.x - transform.position.x) <= attackDist)) {
+            rb.velocity = new Vector2(speed * Direction, rb.velocity.y);
+        }
 
-        rb.velocity = new Vector2(speed * Direction, rb.velocity.y);
-        
         if (wall.Grounded && floor.Grounded) {
             action = StartCoroutine(Jump());
         }
