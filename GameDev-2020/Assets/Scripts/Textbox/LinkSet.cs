@@ -5,9 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class LinkSet
 {
-    [SerializeField]
     public Dialogue_Set linkedSet;
-    [SerializeField]
     public string option = "Option";
 
     public LinkSet() {

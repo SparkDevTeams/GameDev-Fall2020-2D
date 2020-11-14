@@ -8,8 +8,6 @@ public class HealthManager : MonoBehaviour
     [SerializeField] private bool isHit;
     [SerializeField] private int maxHealth;
 
-    public int MaxHP { get { return maxHealth; } }
-
     [SerializeField] private float tempInvincibilityTime;
     [SerializeField] private float currentTimer;
     private bool enemyBodyInvincibility = false;
