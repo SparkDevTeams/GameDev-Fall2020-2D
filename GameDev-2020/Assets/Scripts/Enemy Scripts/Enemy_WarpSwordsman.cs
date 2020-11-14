@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
+/*public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
 {
     protected const float activeDist = 12.0f;
     protected const float attackDist = 2.0f;
@@ -85,7 +85,7 @@ public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
             }
         }
     }
-
+    
     public void Hit(int damage)
     {
         HP -= damage;
@@ -93,7 +93,7 @@ public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
             Destroy(gameObject);
         }
     }
-
+    
     // Start is called before the first frame update
     void Awake()
     {
@@ -261,4 +261,4 @@ public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
         acting = false;
         yield break;
     }
-}
+}*/

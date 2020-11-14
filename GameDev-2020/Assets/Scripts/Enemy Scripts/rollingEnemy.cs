@@ -18,7 +18,7 @@ public class rollingEnemy : MonoBehaviour, IHitable, IHitboxResponder
     private Transform player;
     private Rigidbody2D rb;
     private BoxCollider2D playerCollider;
-    private BoxCollider2D collider;
+    private BoxCollider2D enemyCollider;
     private bool inRange;
     private bool turn = false;
     private bool wandering;
@@ -46,12 +46,12 @@ public class rollingEnemy : MonoBehaviour, IHitable, IHitboxResponder
         layerMaskGround = (LayerMask.GetMask("Ground"));
         layerMaskPlayer = (LayerMask.GetMask("Player"));
         rb = GetComponent<Rigidbody2D>();
-        collider = GetComponent<BoxCollider2D>();
+        enemyCollider = GetComponent<BoxCollider2D>();
         playerCollider = playerOb.GetComponent<BoxCollider2D>();
-        distToGround = collider.bounds.extents.y;
+        distToGround = enemyCollider.bounds.extents.y;
         rollMaxSpeed = 15;
         rollIncrement = 2f;
-        minDist = (playerCollider.bounds.extents.x) + (collider.bounds.extents.x) + .01f;
+        minDist = (playerCollider.bounds.extents.x) + (enemyCollider.bounds.extents.x) + .01f;
     }
 
     void Update()
@@ -241,12 +241,12 @@ public class rollingEnemy : MonoBehaviour, IHitable, IHitboxResponder
         if (facingLeft())
         {
             //Debug.Log(Physics2D.Raycast(transform.position, Vector2.left, (float)(collider.bounds.extents.x + .05), layerMaskGround));
-            hitwall = Physics2D.Raycast(transform.position, Vector2.right, (float)(collider.bounds.extents.x + .05), layerMaskGround);
+            hitwall = Physics2D.Raycast(transform.position, Vector2.right, (float)(enemyCollider.bounds.extents.x + .05), layerMaskGround);
         }
         else
         {
             //Debug.Log(Physics2D.Raycast(transform.position, Vector2.right, (float)(collider.bounds.extents.x + .05), layerMaskGround));
-            hitwall = Physics2D.Raycast(transform.position, Vector2.left, (float)(collider.bounds.extents.x + .05), layerMaskGround);
+            hitwall = Physics2D.Raycast(transform.position, Vector2.left, (float)(enemyCollider.bounds.extents.x + .05), layerMaskGround);
         }
         //Debug.Log("Hitting wall: " + hitwall);
         return hitwall;
@@ -257,9 +257,9 @@ public class rollingEnemy : MonoBehaviour, IHitable, IHitboxResponder
         bool hitPlayer = false;
 
         if (facingLeft())
-            hitPlayer = Physics2D.Raycast(transform.position, Vector2.right, (float)(collider.bounds.extents.x + .05), layerMaskPlayer);
+            hitPlayer = Physics2D.Raycast(transform.position, Vector2.right, (float)(enemyCollider.bounds.extents.x + .05), layerMaskPlayer);
         else
-            hitPlayer = Physics2D.Raycast(transform.position, Vector2.left, (float)(collider.bounds.extents.x + .05), layerMaskPlayer);
+            hitPlayer = Physics2D.Raycast(transform.position, Vector2.left, (float)(enemyCollider.bounds.extents.x + .05), layerMaskPlayer);
         //Debug.Log("Hitting Player: " + hitPlayer);
         return hitPlayer;
     }
