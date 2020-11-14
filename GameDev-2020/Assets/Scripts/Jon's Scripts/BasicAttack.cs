@@ -7,7 +7,12 @@ public class BasicAttack : Attack, IHitboxResponder
     [SerializeField] private Hitbox hitbox;
     [SerializeField] private int damage = 5;
     [SerializeField] private float attackBuffer = 0.1f;
+    [SerializeField] private LayerMask positiveLayer;
+    [SerializeField] private LayerMask negativeLayer;
+    [SerializeField] private LayerMask nullLayer;
 
+    private LayerMask currentLayer;
+    private DimensionManager dimension;
     private PlayerState playerState;
     private float bufferTimer = 0.0f;
 
@@ -16,6 +21,7 @@ public class BasicAttack : Attack, IHitboxResponder
         attackInit = false;
         bufferTimer = 0.0f;
         playerState = GetComponent<PlayerState>();
+        dimension = GetComponent<DimensionManager>();
     }
 
     void Update()
@@ -74,8 +80,27 @@ public class BasicAttack : Attack, IHitboxResponder
 
     private void Swing() 
     {
+        UpdateCurrentLayer();
         hitbox.SetResponder(this);
         hitbox.StartCheckingCollisions();
-        hitbox.HitboxUpdate();
+        hitbox.HitboxUpdate(currentLayer);
+    }
+
+    private void UpdateCurrentLayer()
+    {
+        int id = dimension.GetDimensionID();
+
+        switch (id)
+        {
+            case 1:
+                currentLayer = positiveLayer;
+                break;
+            case 2:
+                currentLayer = negativeLayer;
+                break;
+            default:
+                currentLayer = nullLayer;
+                break;
+        }
     }
 }

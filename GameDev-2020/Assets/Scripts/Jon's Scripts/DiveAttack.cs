@@ -6,6 +6,10 @@ public class DiveAttack : Attack, IHitboxResponder
 {
     [SerializeField] Hitbox diveHitbox;
     [SerializeField] Hitbox landingHitbox;
+    [SerializeField] private LayerMask positiveLayer;
+    [SerializeField] private LayerMask negativeLayer;
+    [SerializeField] private LayerMask nullLayer;
+    private LayerMask currentLayer;
     [SerializeField] private int damage = 8;
     [SerializeField] private int chargedDamage = 8;
     [SerializeField] private float diveTopSpeed = 25.0f;
@@ -15,6 +19,7 @@ public class DiveAttack : Attack, IHitboxResponder
     [SerializeField] private float chargeTime = 1.2f;
     private float diveSpeed = 0.0f;
     private float chargeTimer = 0.0f;
+    private DimensionManager dimension;
     private PlayerState playerState;
     private PlayerMovement movement;
     private Rigidbody2D rb;
@@ -29,6 +34,7 @@ public class DiveAttack : Attack, IHitboxResponder
         playerState = GetComponent<PlayerState>();
         movement = GetComponent<PlayerMovement>();
         rb = GetComponent<Rigidbody2D>();
+        dimension = GetComponent<DimensionManager>();
     }
 
     void Update()
@@ -37,11 +43,13 @@ public class DiveAttack : Attack, IHitboxResponder
 
         if (isDiving)
         {
-            diveHitbox.HitboxUpdate();
+            UpdateCurrentLayer();
+            diveHitbox.HitboxUpdate(currentLayer);
         }
         else if (landing) 
         {
-            landingHitbox.HitboxUpdate();
+            UpdateCurrentLayer();
+            landingHitbox.HitboxUpdate(currentLayer);
             landing = false;
             hasLanded = true;
         }
@@ -186,6 +194,24 @@ public class DiveAttack : Attack, IHitboxResponder
             {
                 hitOptions.Hit(damage);
             }
+        }
+    }
+
+    private void UpdateCurrentLayer()
+    {
+        int id = dimension.GetDimensionID();
+
+        switch (id)
+        {
+            case 1:
+                currentLayer = positiveLayer;
+                break;
+            case 2:
+                currentLayer = negativeLayer;
+                break;
+            default:
+                currentLayer = nullLayer;
+                break;
         }
     }
 }

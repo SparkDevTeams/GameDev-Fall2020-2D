@@ -8,6 +8,11 @@ public class AirAttack : Attack, IHitboxResponder
     [SerializeField] private Hitbox[] hitboxes = new Hitbox[5];
     [SerializeField] private int damage = 3;
     [SerializeField] private float attackBuffer = 0.1f;
+    [SerializeField] private LayerMask positiveLayer;
+    [SerializeField] private LayerMask negativeLayer;
+    [SerializeField] private LayerMask nullLayer;
+    private LayerMask currentLayer;
+    private DimensionManager dimension;
     private PlayerState playerState;
     private float bufferTimer = 0.0f;
     private bool hit = false;
@@ -17,6 +22,7 @@ public class AirAttack : Attack, IHitboxResponder
         attackInit = false;
         bufferTimer = 0.0f;
         playerState = GetComponent<PlayerState>();
+        dimension = GetComponent<DimensionManager>();
     }
 
     void Update()
@@ -71,11 +77,31 @@ public class AirAttack : Attack, IHitboxResponder
 
     private void Swing()
     {
+        UpdateCurrentLayer();
+
         for (int i = 0; i < 5; i++)
         {
-            hitboxes[0].SetResponder(this);
-            hitboxes[0].StartCheckingCollisions();
-            hitboxes[0].HitboxUpdate();
+            hitboxes[i].SetResponder(this);
+            hitboxes[i].StartCheckingCollisions();
+            hitboxes[i].HitboxUpdate(currentLayer);
+        }
+    }
+
+    private void UpdateCurrentLayer()
+    {
+        int id = dimension.GetDimensionID();
+
+        switch (id)
+        {
+            case 1:
+                currentLayer = positiveLayer;
+                break;
+            case 2:
+                currentLayer = negativeLayer;
+                break;
+            default:
+                currentLayer = nullLayer;
+                break;
         }
     }
 }
