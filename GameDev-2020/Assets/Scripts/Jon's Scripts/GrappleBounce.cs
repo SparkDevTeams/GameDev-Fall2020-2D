@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GrappleBounce : MonoBehaviour
+public class GrappleBounce : MonoBehaviour, IHitboxResponder
 {
+    [SerializeField] private Hitbox grappleSideHitbox;
+    [SerializeField] private LayerMask positiveLayer;
+    [SerializeField] private LayerMask negativeLayer;
+    [SerializeField] private LayerMask nullLayer;
     [SerializeField] private float wallBounceSpeed = 10.0f;
     [SerializeField] private float ceilingBounceSpeed = 12.5f;
     [SerializeField] private float floorBounceSpeed = 10.0f;
@@ -12,12 +16,18 @@ public class GrappleBounce : MonoBehaviour
     [SerializeField] private float floorBounceAngle = 40.0f;
     [SerializeField] private float wallBounceTime = 0.2f;
     [SerializeField] private float floorBounceTime = 0.2f;
+    [SerializeField] private float multiBounceForgiveness = 0.15f;
+    private float multiBounceInputTimer = 0.0f;
+    private float bounceTimer = 0.0f;
     private bool floorBouncing = false;
     private bool ceilingBouncing = false;
     private bool wallBouncing = false;
-    private float bounceTimer = 0.0f;
+    private bool wallHit = false;
+    private bool crashed = false;
+    private LayerMask currentLayer;
     private PlayerState playerState;
     private PlayerMovement movement;
+    private DimensionManager dimension;
     private Rigidbody2D rb;
 
     void Start()
@@ -25,6 +35,35 @@ public class GrappleBounce : MonoBehaviour
         playerState = GetComponent<PlayerState>();
         movement = GetComponent<PlayerMovement>();
         rb = GetComponent<Rigidbody2D>();
+        dimension = GetComponent<DimensionManager>();
+    }
+
+    void Update()
+    {
+        if (ceilingBouncing && Input.GetButtonDown("Jump")) 
+        {
+            multiBounceInputTimer = multiBounceForgiveness;
+        }
+
+        if (ceilingBouncing && !playerState.IsGrounded())
+        {
+            CheckWall();
+
+            if (wallHit)
+            {
+                if (multiBounceInputTimer > 0.0f)
+                {
+                    Flip();
+                    multiBounceInputTimer = 0.0f;
+                }
+                else
+                {
+                    crashed = true;
+                }
+
+                wallHit = false;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -58,20 +97,38 @@ public class GrappleBounce : MonoBehaviour
             }
             else if (ceilingBouncing)
             {
-                if (!playerState.IsGrounded())
+                if (multiBounceInputTimer > 0.0f) 
                 {
-                    if (!IsFacingLeft())
+                    multiBounceInputTimer -= Time.deltaTime;
+                    Debug.Log(multiBounceInputTimer);
+                }
+
+                if (!playerState.IsGrounded())
+                { 
+                    if (!crashed)
                     {
-                        Bounce(ceilingBounceAngle, ceilingBounceSpeed);
+                        if (!IsFacingLeft())
+                        {
+                            Bounce(ceilingBounceAngle, ceilingBounceSpeed);
+                        }
+                        else
+                        {
+                            Bounce(HorizontalFlipAngle(ceilingBounceAngle), ceilingBounceSpeed);
+                        }
                     }
-                    else
+                    else 
                     {
-                        Bounce(HorizontalFlipAngle(ceilingBounceAngle), ceilingBounceSpeed);
+                        ceilingBouncing = false;
+                        grappleSideHitbox.StopCheckingCollisions();
+                        playerState.SetGrappleBouncing(false);
+                        movement.ResetGravityDefault();
+                        movement.EnableMovement();
                     }
                 }
                 else 
                 {
                     ceilingBouncing = false;
+                    grappleSideHitbox.StopCheckingCollisions();
                     playerState.SetGrappleBouncing(false);
                     movement.ResetGravityDefault();
                     movement.EnableMovement();
@@ -113,7 +170,10 @@ public class GrappleBounce : MonoBehaviour
         wallBouncing = false;
         ceilingBouncing = false;
         floorBouncing = false;
+        wallHit = false;
+        crashed = false;
         bounceTimer = 0.0f;
+        multiBounceInputTimer = 0.0f;
     }
 
     public void StartWallBounce() 
@@ -137,6 +197,9 @@ public class GrappleBounce : MonoBehaviour
         wallBouncing = false;
         ceilingBouncing = true;
         floorBouncing = false;
+        wallHit = false;
+        crashed = false;
+        multiBounceInputTimer = 0.0f;
     }
 
     public void StartFloorBounce() 
@@ -177,4 +240,58 @@ public class GrappleBounce : MonoBehaviour
     {
         return transform.forward.x < 0.0f;
     }
+
+    public void CollideWith(Collider2D collision)
+    {
+        wallHit = true;
+    }
+
+    private void UpdateCurrentLayer()
+    {
+        int id = dimension.GetDimensionID();
+
+        switch (id)
+        {
+            case 1:
+                currentLayer = positiveLayer;
+                break;
+            case 2:
+                currentLayer = negativeLayer;
+                break;
+            default:
+                currentLayer = nullLayer;
+                break;
+        }
+    }
+
+    private void FaceRight()
+    {
+        transform.eulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
+    }
+
+    private void FaceLeft()
+    {
+        transform.eulerAngles = new Vector3(0.0f, 180.0f, 0.0f);
+    }
+
+    private void Flip()
+    {
+        if (!IsFacingLeft())
+        {
+            FaceLeft();
+        }
+        else 
+        {
+            FaceRight();
+        }
+    }
+
+    private void CheckWall() 
+    {
+        UpdateCurrentLayer();
+        grappleSideHitbox.SetResponder(this);
+        grappleSideHitbox.StartCheckingCollisions();
+        grappleSideHitbox.HitboxUpdate(currentLayer);
+    }
+
 }
