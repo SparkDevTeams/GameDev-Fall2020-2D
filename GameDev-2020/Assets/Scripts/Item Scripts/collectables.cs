@@ -12,7 +12,7 @@ public class collectables : MonoBehaviour
     private bool hasCollected;
     
     //item generation
-    public Collider2D collider;
+    public Collider2D stockedCollider;
     private Collider2D itemCollider;
     
     // Start is called before the first frame update
@@ -28,7 +28,7 @@ public class collectables : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D passedCollider) {
-        if (passedCollider.name == collider.name && passedCollider.tag == collider.tag) {
+        if (passedCollider.name == stockedCollider.name && passedCollider.tag == stockedCollider.tag) {
             hasCollected = true;
             Debug.Log($"item pickup: {itemCollider.name}");
             Destroy(gameObject);

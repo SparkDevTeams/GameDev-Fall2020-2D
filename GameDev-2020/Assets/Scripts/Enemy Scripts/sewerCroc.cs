@@ -15,7 +15,7 @@ public class sewerCroc : MonoBehaviour, IHitable, IHitboxResponder
     private RaycastHit2D hit;
     private Transform player;
     private Rigidbody2D rb;
-    private BoxCollider2D collider;
+    private BoxCollider2D enemyCollider;
     private bool inRange;
     private bool turn = false;
     private bool wandering;
@@ -36,8 +36,8 @@ public class sewerCroc : MonoBehaviour, IHitable, IHitboxResponder
         layerMaskGround = (LayerMask.GetMask("Ground"));
         layerMaskPlayer = (LayerMask.GetMask("Player"));
         rb = GetComponent<Rigidbody2D>();
-        collider = GetComponent<BoxCollider2D>();
-        distToGround = collider.bounds.extents.y;
+        enemyCollider = GetComponent<BoxCollider2D>();
+        distToGround = enemyCollider.bounds.extents.y;
     }
 
     void Update()
