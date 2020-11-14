@@ -16,6 +16,11 @@ public class PlayerAnimator : MonoBehaviour
     const string Player_Dash = "Player_Dash";
     const string Player_AirAttack = "Player_AirAttack";
     const string Player_BasicAttack = "Player_BasicAttack";
+    const string Player_Grapple = "Player_Grapple";
+    const string Player_DiveAttack = "Player_DiveAttack";
+    const string Player_DiveAttackLanding = "Player_DiveAttackLanding";
+
+
 
     private void Start()
     {
@@ -24,7 +29,6 @@ public class PlayerAnimator : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         //Set the player's first/default animation to idling
         animator.Play(Player_Idle);
-        
     }
 
     void ChangeAnimationState(string newState)
@@ -45,41 +49,56 @@ public class PlayerAnimator : MonoBehaviour
             ChangeAnimationState(Player_Idle);
         }
         //Checks for player moving and plays running animation
-        else if(playerState.IsGrounded() && (horMove) && !playerState.IsAttacking() && !playerState.IsDashing())
+        else if (playerState.IsGrounded() && (horMove) && !playerState.IsAttacking() && !playerState.IsDashing())
         {
             Debug.Log("running");
             ChangeAnimationState(Player_Running);
         }
         //Checks if player is jumping and plays jumping animation
-        else if(!playerState.IsGrounded() && !playerState.IsDashing() && !playerState.IsAttacking())
+        else if (!playerState.IsGrounded() && !playerState.IsDashing() && !playerState.IsAttacking())
         {
             if (rb.velocity.y >= 0)
             {
                 Debug.Log("Jumping");
                 ChangeAnimationState(Player_Jumping);
             }
-            else if(rb.velocity.y < 0)
+            else if (rb.velocity.y < 0)
             {
                 Debug.Log("falling");
                 ChangeAnimationState(Player_Falling);
             }
         }
         //Checks if player is dashing and plays dash animation
-        else if(playerState.IsDashing())
+        else if (playerState.IsDashing() && !playerState.IsAttacking())
         {
             Debug.Log("Dashing");
             ChangeAnimationState(Player_Dash);
         }
-        //Checks if player is attacking and plays attacking animation
-        else if(playerState.IsAttacking() && !playerState.IsGrounded() && !playerState.IsDashing())
-        {
-            Debug.Log("AirAttack");
-            ChangeAnimationState(Player_AirAttack);
-        }  
-        else if(playerState.IsAttacking() && playerState.IsGrounded() && !playerState.IsDashing())
-        {
-            Debug.Log("BasicAttack");
-            ChangeAnimationState(Player_BasicAttack);
-        }
+    }
+
+    public void basicAttackAnimation()
+    {
+        Debug.Log("BasicAttack");
+        ChangeAnimationState(Player_BasicAttack);
+    }
+    public void airAttackAnimation()
+    {
+        Debug.Log("AirAttack");
+        ChangeAnimationState(Player_AirAttack);
+    }
+    public void GrappleAnimation()
+    {
+        Debug.Log("GrappleAttack");
+        ChangeAnimationState(Player_Grapple);
+    }
+    public void diveAttackAnimation()
+    {
+        Debug.Log("diveAttack");
+        ChangeAnimationState(Player_DiveAttack);
+    }
+    public void diveAttackLandingAnimation()
+    {
+        Debug.Log("diveAttackLanding");
+        ChangeAnimationState(Player_DiveAttackLanding);
     }
 }
