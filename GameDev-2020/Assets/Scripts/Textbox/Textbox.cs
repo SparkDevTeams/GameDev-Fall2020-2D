@@ -20,8 +20,8 @@ public class Textbox : MonoBehaviour
     private float speed = 10.0f; // 10 chars a second
 
     [SerializeField]
-    private List<List<Dialogue>> nextDialogues = new List<List<Dialogue>>();
-
+    public List<Dialogue_Set> nextDialogues = new List<Dialogue_Set>();
+    public Dialogue_Set currentSet;
     private Coroutine coroutine = null;
 
     public bool Go = false;
@@ -70,7 +70,9 @@ public class Textbox : MonoBehaviour
         }
     }
 
-    public void read(List<Dialogue> dialogues) {
+    public void read(Dialogue_Set dialogues) {
+        if (dialogues == null) { return; }
+
         if (coroutine == null)
         {
             GetComponent<Image>().rectTransform.localScale = new Vector3(1, 0, 1);
@@ -85,7 +87,22 @@ public class Textbox : MonoBehaviour
     //Insert Dialogue Here
 
     //Get Dialogue and begin showing text
-    public IEnumerator readDialogue(List<Dialogue> dialogues) {
+    public IEnumerator readDialogue(Dialogue_Set dia) {
+
+        currentSet = dia;
+
+        if (dia == null) {
+            if (nextDialogues.Count > 0 && nextDialogues[0] != null)
+            {
+                coroutine = StartCoroutine(readDialogue(nextDialogues[0]));
+                nextDialogues.RemoveAt(0);
+                yield break;
+            }
+            coroutine = StartCoroutine(hideTextbox());
+            yield break;
+        }
+
+        List<Dialogue> dialogues = dia.Dialogues;
 
         //Disable Player Movement
         FindObjectOfType<PlayerMovement>()?.DisableMovement();
@@ -173,15 +190,19 @@ public class Textbox : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }//END forloop d
 
+        if (currentSet.LinkedSet.Count > 0  && DecisionBox.S != null) {
+            //Wait for selection
+            DecisionBox.S.Open(dia.LinkedSet);
+            yield return new WaitUntil(() => !DecisionBox.S.Deciding);
+        }
+
         if (nextDialogues.Count > 0)
         {
             coroutine = StartCoroutine(readDialogue(nextDialogues[0]));
             nextDialogues.RemoveAt(0);
+            yield break;
         }
-        else {
-            coroutine = StartCoroutine(hideTextbox());
-        }
-
+        coroutine = StartCoroutine(hideTextbox());
         yield break;
     } //END readDialogue
 

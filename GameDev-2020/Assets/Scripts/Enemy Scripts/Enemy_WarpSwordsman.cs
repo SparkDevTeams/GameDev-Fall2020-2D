@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
+public class Enemy_WarpSwordsman : MonoBehaviour, IHitable
 {
     protected const float activeDist = 12.0f;
     protected const float attackDist = 2.0f;
@@ -85,7 +85,7 @@ using UnityEngine;
             }
         }
     }
-    
+
     public void Hit(int damage)
     {
         HP -= damage;
@@ -93,7 +93,7 @@ using UnityEngine;
             Destroy(gameObject);
         }
     }
-    
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -159,7 +159,9 @@ using UnityEngine;
             action = StartCoroutine(Shift());
             return;
         }
-        if (!(Mathf.Abs(GameObject.FindObjectOfType<PlayerMovement>().transform.position.x - transform.position.x) <= attackDist)) {
+
+        if (Mathf.Abs(GameObject.FindObjectOfType<PlayerMovement>().transform.position.x - transform.position.x) > attackDist) {
+
             rb.velocity = new Vector2(speed * Direction, rb.velocity.y);
         }
 
@@ -261,4 +263,4 @@ using UnityEngine;
         acting = false;
         yield break;
     }
-}*/
+}
