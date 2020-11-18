@@ -33,7 +33,7 @@ public class Talker : MonoBehaviour
         }
 
         //if player presses talk button Talk
-        if ( nearPlayer && Input.GetButtonDown("Talk") && !Textbox.On ) {
+        if ( nearPlayer && Input.GetButtonDown("Talk") && !Textbox.On && FindObjectOfType<PlayerState>().IsGrounded()) {
             Talk();
         }
         
