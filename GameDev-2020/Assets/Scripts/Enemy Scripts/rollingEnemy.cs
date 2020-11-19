@@ -7,7 +7,7 @@ public class rollingEnemy : MonoBehaviour, IHitable, IHitboxResponder
     [SerializeField] private float walkSpeed = 3.0f;
     [SerializeField] private float range;
     [SerializeField] private Hitbox hitbox;
-    [SerializeField] private int hp = 200;
+    [SerializeField] private int hp = 20;
     [SerializeField] private int damage = 10;
     [SerializeField] private float attackBuffer = 0.1f;
     [SerializeField] private GameObject playerOb;
@@ -126,7 +126,10 @@ public class rollingEnemy : MonoBehaviour, IHitable, IHitboxResponder
 
     private void FixedUpdate()
     {
-        
+
+        if (hp <= 0)
+            Destroy(gameObject);
+
         if (!wandering)
         {
             //rolls in direction of player
