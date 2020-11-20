@@ -69,7 +69,7 @@ public class rollingEnemy : MonoBehaviour, IHitable, IHitboxResponder
         }
 
         //If the player is within range of the gator and it is able to attack then the gator begins attacking and opening hitboxes
-        if (hitRange && playerDistance < 1.45 && attackTimer <= 0f)
+        if (hitRange && playerCollide() && attackTimer <= 0f)
         {
             Bite();
             attackTimer = 1f;
@@ -283,15 +283,13 @@ public class rollingEnemy : MonoBehaviour, IHitable, IHitboxResponder
     }
     public void CollideWith(Collider2D collision)
     {
-        IHitable hitOptions = collision.GetComponentInParent<IHitable>();
-
-        if (hitOptions != null)
-        {
-            hitOptions.Hit(damage);
-        }
+        Debug.Log("Attacking");
+        collision.GetComponentInParent<HealthManager>().damagePlayer(damage);
+        //collision.GetComponentInParent<Knockback>().RelativeKnockback(new Vector2(transform.position.x, transform.position.y));
     }
     private void Bite()
     {
+        Debug.Log("Attacking zzzzzzzzz");
         hitbox.SetResponder(this);
         hitbox.StartCheckingCollisions();
         hitbox.HitboxUpdate();
