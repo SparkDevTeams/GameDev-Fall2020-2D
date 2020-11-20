@@ -10,8 +10,8 @@ public class simpleHealthPickup : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            Debug.Log(other.tag);
-            Debug.Log("heal by: " + healAmount);
+            //Debug.Log(other.tag);
+            //Debug.Log("heal by: " + healAmount);
             other.GetComponent<HealthManager>().damagePlayer(-healAmount);
             Destroy(gameObject);
         }
