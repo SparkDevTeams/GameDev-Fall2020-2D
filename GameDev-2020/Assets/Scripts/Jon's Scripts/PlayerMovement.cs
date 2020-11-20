@@ -54,7 +54,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (dashButtonDown) 
         {
-            Debug.Log("Dash down");
+            Debug.Log(dashButtonDown && !playerState.IsDashing()
+            && (playerState.IsGrounded() || (!playerState.IsGrounded() && airDashes > 0)));
         }
     }
 
@@ -91,21 +92,23 @@ public class PlayerMovement : MonoBehaviour
         {
             MoveRight();
         }
+        
 
-        if (dashButtonDown && !playerState.IsDashing()/* && stockedDashes > 0*/
+        if (dashButtonDown && !playerState.IsDashing()
             && (playerState.IsGrounded() || (!playerState.IsGrounded() && airDashes > 0)))
         {
+            Debug.Log("wtf");
             DisableJump();
 
             if (!playerState.IsGrounded())
             { 
                 airDashes--;
             }
-
+           
             dashTimer = dashTime;
             //stockedDashes--;
             playerState.SetDashing(true);
-            Debug.Log("Is it dashing: "+playerState.IsDashing());
+            //Debug.Log("Is it dashing: "+playerState.IsDashing());
 
             if (!IsFacingLeft())
             {

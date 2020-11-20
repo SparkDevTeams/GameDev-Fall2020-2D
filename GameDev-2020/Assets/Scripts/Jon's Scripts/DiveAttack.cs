@@ -23,6 +23,7 @@ public class DiveAttack : Attack, IHitboxResponder
     private PlayerState playerState;
     private PlayerMovement movement;
     private Rigidbody2D rb;
+    private PlayerAnimator animate;
     private bool isDiving = false;
     private bool hasLanded = false;
     private bool landing = false;
@@ -35,6 +36,7 @@ public class DiveAttack : Attack, IHitboxResponder
         movement = GetComponent<PlayerMovement>();
         rb = GetComponent<Rigidbody2D>();
         dimension = GetComponent<DimensionManager>();
+        animate = GetComponent<PlayerAnimator>();
     }
 
     void Update()
@@ -69,6 +71,7 @@ public class DiveAttack : Attack, IHitboxResponder
 
                     if (chargeTimer <= 0.0f)
                     {
+                        animate.diveAttackAnimation();
                         chargeTimer = 0.0f;
                         isDiving = true;
                         chargedDive = true;
@@ -84,6 +87,7 @@ public class DiveAttack : Attack, IHitboxResponder
                     chargedDive = false;
                     diveHitbox.SetResponder(this);
                     diveHitbox.StartCheckingCollisions();
+                    animate.diveAttackAnimation();
                 }
             }
             
@@ -127,6 +131,7 @@ public class DiveAttack : Attack, IHitboxResponder
         rb.gravityScale = 0.0f;
         diveSpeed = 0.0f;
         chargeTimer = chargeTime;
+        animate.diveAttackChargingAnimation();
 
         if(chargeTime <= 0.0f) 
         {
