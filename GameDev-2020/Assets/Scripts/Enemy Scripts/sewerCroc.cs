@@ -43,7 +43,7 @@ public class sewerCroc : MonoBehaviour, IHitable, IHitboxResponder
         enemyCollider = GetComponent<BoxCollider2D>();
         playerCollider = playerOb.GetComponent<BoxCollider2D>();
         distToGround = enemyCollider.bounds.extents.y;
-        minDist = (playerCollider.bounds.extents.x) + (enemyCollider.bounds.extents.x) + .01f;
+        minDist = (playerCollider.bounds.extents.x) + (enemyCollider.bounds.extents.x) + .15f;
         hp = maxhp;
     }
 
@@ -62,8 +62,10 @@ public class sewerCroc : MonoBehaviour, IHitable, IHitboxResponder
         }
 
         //If the player is within range of the gator and it is able to attack then the gator begins attacking and opening hitboxes
-        if(hitRange && playerDistance < 1.45 && attackTimer <= 0f)
+        //Debug.Log("Player dist" + xDistance() + "min dist" + minDist);
+        if(hitRange && xDistance() <= (minDist + .1f) && attackTimer <= 0f)
         {
+            Debug.Log("initiating");
             Bite();
             attackTimer = 1f;
             bufferTimer = attackBuffer;
@@ -216,15 +218,11 @@ public class sewerCroc : MonoBehaviour, IHitable, IHitboxResponder
     }
     public void CollideWith(Collider2D collision)
     {
-        IHitable hitOptions = collision.GetComponentInParent<IHitable>();
-
-        if (hitOptions != null)
-        {
-            hitOptions.Hit(damage);
-        }
+        collision.GetComponentInParent<HealthManager>().damagePlayer(damage);
     }
+
     private void Bite()
-    { 
+    {
         hitbox.SetResponder(this);
         hitbox.StartCheckingCollisions();
         hitbox.HitboxUpdate();
