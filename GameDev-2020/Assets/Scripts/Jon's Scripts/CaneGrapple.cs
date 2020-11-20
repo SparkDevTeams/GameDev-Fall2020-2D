@@ -27,6 +27,7 @@ public class CaneGrapple : Attack, IHitboxResponder
     private HealthManager health;
     private Rigidbody2D rb;
     private GrappleBounce bounce;
+    private LineRenderer line;
     private LayerMask currentLayer;
     [SerializeField] private Transform startPos;
     [SerializeField] private Hitbox sideCheck;
@@ -45,6 +46,8 @@ public class CaneGrapple : Attack, IHitboxResponder
         rb = GetComponent<Rigidbody2D>();
         bounce = GetComponent<GrappleBounce>();
         health = GetComponent<HealthManager>();
+        line = GetComponent<LineRenderer>();
+        ResetLine();
     }
 
     void Update()
@@ -69,6 +72,11 @@ public class CaneGrapple : Attack, IHitboxResponder
                 health.disableEnemyBodyInvincibility();
             }
         }
+
+        if (!attackInit) 
+        {
+            ResetLine();
+        }
     }
 
     void FixedUpdate() 
@@ -83,6 +91,7 @@ public class CaneGrapple : Attack, IHitboxResponder
             }
             else if (locked) 
             {
+                SetLine(grapplePoint);
                 CheckSide();
                 CheckBottom();
                 CheckTop();
@@ -117,6 +126,7 @@ public class CaneGrapple : Attack, IHitboxResponder
             topCheck.StopCheckingCollisions();
             sideCheck.StopCheckingCollisions();
             bottomCheck.StopCheckingCollisions();
+            ResetLine();
         }
     }
 
@@ -182,6 +192,7 @@ public class CaneGrapple : Attack, IHitboxResponder
         startingInAir = false;
         movement.ResetGravityDefault();
         movement.EnableMovement();
+        ResetLine();
     }
 
     public void CollideWith(Collider2D collision) 
@@ -228,6 +239,7 @@ public class CaneGrapple : Attack, IHitboxResponder
         }
 
         RaycastHit2D hit = Physics2D.Raycast(startPos.position, throwDirection, raycastDist, currentLayer);
+        SetLine(startPos.position + (throwDirection.normalized * raycastDist));
 
         if (hit.collider != null)
         {
@@ -352,5 +364,17 @@ public class CaneGrapple : Attack, IHitboxResponder
     private bool IsFacingLeft()
     {
         return transform.forward.x < 0.0f;
+    }
+
+    private void ResetLine() 
+    {
+        line.SetPosition(0, transform.position);
+        line.SetPosition(1, transform.position);
+    }
+
+    private void SetLine(Vector2 pos) 
+    {
+        line.SetPosition(0, startPos.position);
+        line.SetPosition(1, pos);
     }
 }
