@@ -19,6 +19,7 @@ public class PlayerAnimator : MonoBehaviour
     const string Player_Grapple = "Player_Grapple";
     const string Player_DiveAttack = "Player_DiveAttack";
     const string Player_DiveAttackLanding = "Player_DiveAttackLanding";
+    const string Player_Charging = "Player_Charging";
 
 
 
@@ -41,17 +42,17 @@ public class PlayerAnimator : MonoBehaviour
     void Update()
     {
         horMove = Input.GetAxisRaw("Horizontal") != 0.0f;
-        Debug.Log(horMove);
+        //Debug.Log(horMove);
         //Checks for player idling and plays idle animation
         if (playerState.IsGrounded() && (!horMove) && !playerState.IsAttacking())
         {
-            Debug.Log("idle");
+            //Debug.Log("idle");
             ChangeAnimationState(Player_Idle);
         }
         //Checks for player moving and plays running animation
         else if (playerState.IsGrounded() && (horMove) && !playerState.IsAttacking() && !playerState.IsDashing())
         {
-            Debug.Log("running");
+            //Debug.Log("running");
             ChangeAnimationState(Player_Running);
         }
         //Checks if player is jumping and plays jumping animation
@@ -59,46 +60,50 @@ public class PlayerAnimator : MonoBehaviour
         {
             if (rb.velocity.y >= 0)
             {
-                Debug.Log("Jumping");
+                //Debug.Log("Jumping");
                 ChangeAnimationState(Player_Jumping);
             }
             else if (rb.velocity.y < 0)
             {
-                Debug.Log("falling");
+                //Debug.Log("falling");
                 ChangeAnimationState(Player_Falling);
             }
         }
         //Checks if player is dashing and plays dash animation
         else if (playerState.IsDashing() && !playerState.IsAttacking())
         {
-            Debug.Log("Dashing");
+            //Debug.Log("Dashing");
             ChangeAnimationState(Player_Dash);
         }
     }
 
     public void basicAttackAnimation()
     {
-        Debug.Log("BasicAttack");
+        //Debug.Log("BasicAttack");
         ChangeAnimationState(Player_BasicAttack);
     }
     public void airAttackAnimation()
     {
-        Debug.Log("AirAttack");
+        //Debug.Log("AirAttack");
         ChangeAnimationState(Player_AirAttack);
     }
     public void GrappleAnimation()
     {
-        Debug.Log("GrappleAttack");
+        //Debug.Log("GrappleAttack");
         ChangeAnimationState(Player_Grapple);
     }
     public void diveAttackAnimation()
     {
-        Debug.Log("diveAttack");
+        //Debug.Log("diveAttack");
         ChangeAnimationState(Player_DiveAttack);
     }
     public void diveAttackLandingAnimation()
     {
-        Debug.Log("diveAttackLanding");
+        //Debug.Log("diveAttackLanding");
         ChangeAnimationState(Player_DiveAttackLanding);
+    }
+    public void diveAttackChargingAnimation(){
+        //Debug.Log("diveAttackCharging");
+        ChangeAnimationState(Player_Charging);
     }
 }

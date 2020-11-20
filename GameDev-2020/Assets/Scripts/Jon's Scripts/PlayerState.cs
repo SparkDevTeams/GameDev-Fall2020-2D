@@ -6,7 +6,7 @@ public class PlayerState : MonoBehaviour
 {
     private bool grounded = false;
     private bool jumping = false;
-    private bool dashing = false;
+    [SerializeField] private bool dashing = false;
     private bool interacting = false;
     private bool attacking = false;
     private bool grappleBouncing = false;
