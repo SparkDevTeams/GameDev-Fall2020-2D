@@ -7,7 +7,9 @@ public class sewerCroc : MonoBehaviour, IHitable, IHitboxResponder
     [SerializeField] private float walkSpeed = 3.0f;
     [SerializeField] private float range;
     [SerializeField] private Hitbox hitbox;
-    [SerializeField] private int hp = 200;
+    [SerializeField] private GameObject playerOb;
+    [SerializeField] private int hp;
+    [SerializeField] private int maxhp;
     [SerializeField] private int damage = 10;
     [SerializeField] private float attackBuffer = 0.1f;
     private float bufferTimer;
@@ -16,6 +18,7 @@ public class sewerCroc : MonoBehaviour, IHitable, IHitboxResponder
     private Transform player;
     private Rigidbody2D rb;
     private BoxCollider2D enemyCollider;
+    private BoxCollider2D playerCollider;
     private bool inRange;
     private bool turn = false;
     private bool wandering;
@@ -28,6 +31,7 @@ public class sewerCroc : MonoBehaviour, IHitable, IHitboxResponder
     private float attackTimer = 0f;
     private float turnTimer = 0f;
     private float playerDistance;
+    private float minDist;
 
 
     void Start()
@@ -37,7 +41,10 @@ public class sewerCroc : MonoBehaviour, IHitable, IHitboxResponder
         layerMaskPlayer = (LayerMask.GetMask("Player"));
         rb = GetComponent<Rigidbody2D>();
         enemyCollider = GetComponent<BoxCollider2D>();
+        playerCollider = playerOb.GetComponent<BoxCollider2D>();
         distToGround = enemyCollider.bounds.extents.y;
+        minDist = (playerCollider.bounds.extents.x) + (enemyCollider.bounds.extents.x) + .01f;
+        hp = maxhp;
     }
 
     void Update()
@@ -107,7 +114,9 @@ public class sewerCroc : MonoBehaviour, IHitable, IHitboxResponder
 
     private void FixedUpdate()
     {
-        
+        if (hp <= 0)
+            Destroy(gameObject);
+
         if (isGrounded() && lungeTimer < 2f)
         {
             lunging = false;
@@ -117,21 +126,25 @@ public class sewerCroc : MonoBehaviour, IHitable, IHitboxResponder
         {
             lunge();
         }
+        
+        
 
         //When the gator is not wandering it chases the player
         if (!wandering)
         {
-            if ((transform.position.x < player.transform.position.x) && isGrounded() && !lunging && xDistance() > 1.45)
+            
+            
+            if ((transform.position.x < player.transform.position.x) && isGrounded() && !lunging && xDistance() > minDist)
             {
                 rb.velocity = new Vector2(walkSpeed, rb.velocity.y);
                 faceLeft();
             }
-            else if ((transform.position.x > player.transform.position.x) && isGrounded() && !lunging && xDistance() > 1.45)
+            else if ((transform.position.x > player.transform.position.x) && isGrounded() && !lunging && xDistance() > minDist)
             {
                 rb.velocity = new Vector2(-walkSpeed, rb.velocity.y);
                 faceRight();
             }
-            else if(xDistance() < 1.45f)
+            else if(xDistance() <= minDist)
             {
                 rb.velocity = new Vector2(0f, rb.velocity.y);
             }
@@ -184,7 +197,7 @@ public class sewerCroc : MonoBehaviour, IHitable, IHitboxResponder
 
     private bool isGrounded()
     {
-        return Physics2D.Raycast(transform.position, Vector2.down, (float)((float) distToGround + 0.001), layerMaskGround);
+        return Physics2D.Raycast(transform.position, Vector2.down, (float)((float) distToGround + 0.1), layerMaskGround);
     }
     private float xDistance()
     {
@@ -193,12 +206,13 @@ public class sewerCroc : MonoBehaviour, IHitable, IHitboxResponder
     public void Hit(int damage)
     {
         hp -= damage;
-        Debug.Log("Took " + damage + " damage HP: " + hp);
-
+        Debug.Log("Damage Taken");
         if (hp <= 0)
         {
             gameObject.SetActive(false);
+            Destroy(gameObject);
         }
+        
     }
     public void CollideWith(Collider2D collision)
     {
